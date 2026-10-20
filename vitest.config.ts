@@ -4,6 +4,7 @@ export default defineConfig({
   resolve: { tsconfigPaths: true },
   test: {
     environment: "node",
+    env: { SESSION_SECRET: "test-only-session-secret-0123456789abcdef" },
     projects: [
       {
         extends: true,

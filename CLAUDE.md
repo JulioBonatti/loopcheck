@@ -52,7 +52,7 @@ Next.js (App Router) · TypeScript strict · PostgreSQL · Drizzle ORM · Zod ·
 - `npm run db:migrate`: aplica as migrações em `DATABASE_URL` (`.env.local`, copiado de `.env.example`).
 - `npm run dev` · `npm run lint` · `npm run typecheck`
 - `npm test`: Vitest, projetos `unit` e `db`. O `db` recria o schema de `loopcheck_test` a partir das migrações (precisa de `db:up`). Só um: `npx vitest run --project unit`.
-- `npm run test:e2e`: Playwright.
+- `npm run test:e2e`: Playwright. Sobe o próprio `next dev` na porta 3100, com o banco `loopcheck_e2e` (recriado a cada execução) e a pasta de build `.next-e2e` (roda junto com o `npm run dev`). Na primeira vez no WSL/Linux: `sudo npx playwright install-deps chromium`.
 
 ## Estrutura (alvo)
 
