@@ -19,7 +19,11 @@ function readForm(formData: FormData, fields: string[]) {
 export async function signUpAction(_: AuthFormState, formData: FormData): Promise<AuthFormState> {
   const values = readForm(formData, ["firstName", "lastName", "email"]);
   const result = await toActionResult(() =>
-    signUp({ ...values, password: String(formData.get("password") ?? "") }),
+    signUp({
+      ...values,
+      password: String(formData.get("password") ?? ""),
+      confirmPassword: String(formData.get("confirmPassword") ?? ""),
+    }),
   );
   if (!result.ok) return { error: result.error, values };
 

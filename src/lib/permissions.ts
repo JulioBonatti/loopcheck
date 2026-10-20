@@ -41,3 +41,9 @@ export type ProjectPermission = keyof typeof projectPermissions;
 export function roleCan(role: ProjectRole, permission: ProjectPermission): boolean {
   return (projectPermissions[permission] as readonly ProjectRole[]).includes(role);
 }
+
+export const roleLabels: Record<ProjectRole, string> = {
+  owner: "Owner",
+  member: "Member",
+  viewer: "Viewer",
+};

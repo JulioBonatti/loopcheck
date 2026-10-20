@@ -55,6 +55,14 @@ export function SignUpForm() {
         required
         errors={fieldErrors.password}
       />
+      <FormField
+        name="confirmPassword"
+        label="Confirm password"
+        type="password"
+        autoComplete="new-password"
+        required
+        errors={fieldErrors.confirmPassword}
+      />
       <Button type="submit" disabled={pending}>
         {pending ? "Creating account…" : "Sign up"}
       </Button>

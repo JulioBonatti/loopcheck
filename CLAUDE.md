@@ -62,6 +62,8 @@ src/app/            rotas e páginas (App Router)
 src/components/     UI (shadcn/ui em components/ui)
 src/server/db/      schema Drizzle, migrações, conexão
 src/server/services/ regras de negócio + auditoria (únicas a fazer mutações)
+src/server/queries/  leituras (sem mutação), sempre filtradas pelo usuário logado
+src/server/auth/     senha, token e cookie de sessão
 src/lib/            utilidades puras (datas, status, csv, mapeamento) — com testes
 tests/              e2e (Playwright)
 ```

@@ -13,13 +13,15 @@ test("sign up, sign out and sign in again", async ({ page }) => {
   await page.getByLabel("First name").fill("Ana");
   await page.getByLabel("Last name").fill("Lima");
   await page.getByLabel("Email").fill(email);
-  await page.getByLabel("Password").fill("secret");
+  await page.getByLabel("Password", { exact: true }).fill("secret");
+  await page.getByLabel("Confirm password").fill("secret");
   await page.getByRole("button", { name: "Sign up" }).click();
   await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
   await expect(page.getByText("Ana Lima")).toBeVisible();
 
   // Sign out → protected pages are closed again
-  await page.getByRole("button", { name: "Sign out" }).click();
+  await page.getByRole("button", { name: "Open navigation" }).hover();
+  await page.getByRole("menuitem", { name: "Sign out" }).click();
   await expect(page).toHaveURL(/\/sign-in$/);
   await page.goto("/");
   await expect(page).toHaveURL(/\/sign-in$/);

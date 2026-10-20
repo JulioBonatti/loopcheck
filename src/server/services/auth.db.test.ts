@@ -20,6 +20,11 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const ana = { firstName: "Ana", lastName: "Lima", email: "ana@example.com", password: "secret" };
 const bob = { firstName: "Bob", lastName: "Reis", email: "bob@example.com", password: "hunter2" };
 
+/** Sign-up input: the password typed twice. */
+function newAccount(person: typeof ana) {
+  return { ...person, confirmPassword: person.password };
+}
+
 async function rejection(promise: Promise<unknown>): Promise<unknown> {
   return promise.then(
     () => expect.fail("expected the call to fail"),
@@ -37,22 +42,22 @@ afterAll(async () => {
 
 describe("signUp (REQ-AUTH-01, REQ-AUTH-05)", () => {
   it("makes only the first user an admin", async () => {
-    const first = await signUp(ana, { db });
-    const second = await signUp(bob, { db });
+    const first = await signUp(newAccount(ana), { db });
+    const second = await signUp(newAccount(bob), { db });
 
     expect(first.user.isAdmin).toBe(true);
     expect(second.user.isAdmin).toBe(false);
   });
 
   it("makes exactly one admin when the first sign-ups happen at once", async () => {
-    await Promise.all([signUp(ana, { db }), signUp(bob, { db })]);
+    await Promise.all([signUp(newAccount(ana), { db }), signUp(newAccount(bob), { db })]);
 
     const admins = await db.select().from(users).where(eq(users.isAdmin, true));
     expect(admins).toHaveLength(1);
   });
 
   it("stores the e-mail in lower case and the password only as argon2id (REQ-AUTH-03)", async () => {
-    await signUp({ ...ana, email: "  Ana@Example.COM " }, { db });
+    await signUp({ ...newAccount(ana), email: "  Ana@Example.COM " }, { db });
 
     const [user] = await db.select().from(users);
     expect(user.email).toBe("ana@example.com");
@@ -61,9 +66,9 @@ describe("signUp (REQ-AUTH-01, REQ-AUTH-05)", () => {
   });
 
   it("refuses an e-mail that already has an account, in any case", async () => {
-    await signUp(ana, { db });
+    await signUp(newAccount(ana), { db });
 
-    const error = await rejection(signUp({ ...bob, email: "ANA@example.com" }, { db }));
+    const error = await rejection(signUp({ ...newAccount(bob), email: "ANA@example.com" }, { db }));
 
     expect(error).toBeInstanceOf(ValidationError);
     expect((error as ValidationError).fieldErrors.email).toEqual([
@@ -71,9 +76,21 @@ describe("signUp (REQ-AUTH-01, REQ-AUTH-05)", () => {
     ]);
   });
 
+  it("requires the password typed twice", async () => {
+    const error = await rejection(signUp({ ...ana, confirmPassword: "secreT" }, { db }));
+
+    expect((error as ValidationError).fieldErrors).toEqual({
+      confirmPassword: ["Passwords do not match."],
+    });
+    expect(await db.select().from(users)).toHaveLength(0);
+  });
+
   it("validates every field", async () => {
     const error = await rejection(
-      signUp({ firstName: " ", lastName: "", email: "not-an-email", password: "" }, { db }),
+      signUp(
+        { firstName: " ", lastName: "", email: "not-an-email", password: "", confirmPassword: "" },
+        { db },
+      ),
     );
 
     expect(Object.keys((error as ValidationError).fieldErrors).sort()).toEqual([
@@ -85,7 +102,7 @@ describe("signUp (REQ-AUTH-01, REQ-AUTH-05)", () => {
   });
 
   it("audits the sign-up without the password", async () => {
-    const { user } = await signUp(ana, { db });
+    const { user } = await signUp(newAccount(ana), { db });
 
     const log = await db.select().from(auditLog).where(eq(auditLog.action, "user.sign_up"));
     expect(log).toHaveLength(1);
@@ -96,7 +113,7 @@ describe("signUp (REQ-AUTH-01, REQ-AUTH-05)", () => {
 
 describe("signIn (REQ-AUTH-02)", () => {
   it("accepts the e-mail in any case and returns a session", async () => {
-    await signUp(ana, { db });
+    await signUp(newAccount(ana), { db });
 
     const { user, token } = await signIn({ email: "ANA@example.com", password: "secret" }, { db });
 
@@ -105,7 +122,7 @@ describe("signIn (REQ-AUTH-02)", () => {
   });
 
   it("gives the same generic error for a wrong password and an unknown e-mail", async () => {
-    await signUp(ana, { db });
+    await signUp(newAccount(ana), { db });
 
     const wrongPassword = await rejection(signIn({ ...ana, password: "nope" }, { db }));
     const unknownEmail = await rejection(signIn({ ...bob }, { db }));
@@ -115,7 +132,7 @@ describe("signIn (REQ-AUTH-02)", () => {
   });
 
   it("stores only a hash of the session token", async () => {
-    await signUp(ana, { db });
+    await signUp(newAccount(ana), { db });
     const { token } = await signIn(ana, { db });
 
     const rows = await db.select().from(sessions);
@@ -132,7 +149,7 @@ describe("failed attempts limit (REQ-AUTH-08, P-03)", () => {
   }
 
   it("blocks the e-mail after 10 failures in 15 minutes, even with the right password", async () => {
-    await signUp(ana, { db });
+    await signUp(newAccount(ana), { db });
     const now = new Date("2026-10-20T12:00:00Z");
     await failTimes(MAX_FAILED_ATTEMPTS, now);
 
@@ -143,7 +160,7 @@ describe("failed attempts limit (REQ-AUTH-08, P-03)", () => {
   });
 
   it("lets the user in again once the window has passed", async () => {
-    await signUp(ana, { db });
+    await signUp(newAccount(ana), { db });
     const start = new Date("2026-10-20T12:00:00Z");
     await failTimes(MAX_FAILED_ATTEMPTS, start);
 
@@ -152,7 +169,7 @@ describe("failed attempts limit (REQ-AUTH-08, P-03)", () => {
   });
 
   it("resets the count after a successful sign-in", async () => {
-    await signUp(ana, { db });
+    await signUp(newAccount(ana), { db });
     const now = new Date("2026-10-20T12:00:00Z");
     await failTimes(MAX_FAILED_ATTEMPTS - 1, now);
     await signIn(ana, { db, now });
@@ -161,8 +178,8 @@ describe("failed attempts limit (REQ-AUTH-08, P-03)", () => {
   });
 
   it("does not block other e-mails", async () => {
-    await signUp(ana, { db });
-    await signUp(bob, { db });
+    await signUp(newAccount(ana), { db });
+    await signUp(newAccount(bob), { db });
     const now = new Date("2026-10-20T12:00:00Z");
     await failTimes(MAX_FAILED_ATTEMPTS, now);
 
@@ -173,7 +190,7 @@ describe("failed attempts limit (REQ-AUTH-08, P-03)", () => {
 describe("sessions (REQ-AUTH-04, P-02)", () => {
   it("expires after 14 days without use", async () => {
     const start = new Date("2026-10-01T12:00:00Z");
-    const { token } = await signUp(ana, { db, now: start });
+    const { token } = await signUp(newAccount(ana), { db, now: start });
 
     const justBefore = new Date(start.getTime() + 14 * DAY_MS - 1000);
     const after = new Date(start.getTime() + 14 * DAY_MS + 1000);
@@ -184,7 +201,7 @@ describe("sessions (REQ-AUTH-04, P-02)", () => {
 
   it("is renewed by use, at most once a day", async () => {
     const start = new Date("2026-10-01T12:00:00Z");
-    const { token } = await signUp(ana, { db, now: start });
+    const { token } = await signUp(newAccount(ana), { db, now: start });
 
     const sameDay = await validateSession(token, { db, now: new Date(start.getTime() + 3600_000) });
     expect(sameDay?.expiresAt.getTime()).toBe(start.getTime() + 14 * DAY_MS);
@@ -199,7 +216,7 @@ describe("sessions (REQ-AUTH-04, P-02)", () => {
   });
 
   it("ends on sign out, without touching the user's other sessions", async () => {
-    const { token: first } = await signUp(ana, { db });
+    const { token: first } = await signUp(newAccount(ana), { db });
     const { token: second } = await signIn(ana, { db });
 
     await signOut(first, { db });

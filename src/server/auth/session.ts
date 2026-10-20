@@ -32,15 +32,26 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
   return (await validateSession(token))?.user ?? null;
 });
 
-/** For pages and actions that need a signed-in user. */
-export async function requireUser(): Promise<SessionUser> {
+type RequireOptions = {
+  /** Only for the page and action that set the new password. */
+  allowPendingPasswordChange?: boolean;
+};
+
+/**
+ * For pages and actions that need a signed-in user. After an admin
+ * temporary password, everything leads to setting a new one (REQ-AUTH-07).
+ */
+export async function requireUser(options: RequireOptions = {}): Promise<SessionUser> {
   const user = await getCurrentUser();
   if (!user) redirect("/sign-in");
+  if (user.mustChangePassword && !options.allowPendingPasswordChange) {
+    redirect("/change-password");
+  }
   return user;
 }
 
 /** The actor passed to the service layer. */
-export async function requireActor(): Promise<Actor> {
-  const user = await requireUser();
+export async function requireActor(options: RequireOptions = {}): Promise<Actor> {
+  const user = await requireUser(options);
   return { userId: user.id, isAdmin: user.isAdmin };
 }

@@ -30,14 +30,29 @@ const email = z.string().trim().toLowerCase().pipe(z.email("Enter a valid email 
 const name = (label: string) =>
   z.string().trim().min(1, `${label} is required.`).max(100, `${label} is too long.`);
 // No complexity rules (REQ-AUTH-01); the cap only keeps hashing cheap.
-const password = z.string().min(1, "Password is required.").max(256, "Password is too long.");
+export const newPassword = z
+  .string()
+  .min(1, "Password is required.")
+  .max(256, "Password is too long.");
 
-export const signUpSchema = z.object({
-  firstName: name("First name"),
-  lastName: name("Last name"),
-  email,
-  password,
-});
+/** Typing the new password twice catches typos (decision of 2026-10-20). */
+export function passwordsMatch(data: { password: string; confirmPassword: string }) {
+  return data.password === data.confirmPassword;
+}
+export const PASSWORDS_DO_NOT_MATCH = {
+  message: "Passwords do not match.",
+  path: ["confirmPassword"],
+};
+
+export const signUpSchema = z
+  .object({
+    firstName: name("First name"),
+    lastName: name("Last name"),
+    email,
+    password: newPassword,
+    confirmPassword: z.string(),
+  })
+  .refine(passwordsMatch, PASSWORDS_DO_NOT_MATCH);
 
 export const signInSchema = z.object({
   email: z.string().trim().toLowerCase().min(1, "Email is required."),
