@@ -1,6 +1,6 @@
 "use client";
 
-import { FolderKanbanIcon, LogOutIcon, MenuIcon, UserIcon } from "lucide-react";
+import { FolderKanbanIcon, LogOutIcon, MenuIcon, PlusIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useTransition } from "react";
 import { signOutAction } from "@/app/(auth)/actions";
@@ -54,6 +54,10 @@ export function NavMenu({ projects }: { projects: NavProject[] }) {
           {projects.length === 0 && (
             <DropdownMenuLabel className="pl-7 font-normal">No projects yet</DropdownMenuLabel>
           )}
+          <DropdownMenuLinkItem render={<Link href="/?new" />}>
+            <PlusIcon />
+            New project
+          </DropdownMenuLinkItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuLinkItem render={<Link href="/account" />}>

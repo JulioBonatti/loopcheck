@@ -37,11 +37,13 @@ export async function createProject(
   ownerId: string,
   values: Partial<typeof projects.$inferInsert> = {},
 ) {
+  seq += 1;
   const [project] = await db
     .insert(projects)
     .values({
       clientName: "ACME",
-      code: "P-001",
+      // Codes are unique outside the trash
+      code: `P-${seq}`,
       fieldStartDate: "2026-10-01",
       timezone: "America/Chicago",
       createdBy: ownerId,

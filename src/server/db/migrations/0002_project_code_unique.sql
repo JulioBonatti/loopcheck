@@ -1,0 +1,2 @@
+CREATE UNIQUE INDEX "projects_code_unique" ON "projects" USING btree (lower("code")) WHERE "projects"."deleted_at" is null;--> statement-breakpoint
+ALTER TABLE "projects" ADD CONSTRAINT "projects_code_trimmed" CHECK ("projects"."code" = btrim("projects"."code") and "projects"."code" <> '');

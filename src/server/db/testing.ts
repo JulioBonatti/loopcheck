@@ -36,12 +36,4 @@ export async function truncateAll(db: Db = getTestDb()) {
   `);
 }
 
-/** Postgres SQLSTATE of a failed query (Drizzle wraps the driver error). */
-export function pgErrorCode(error: unknown): string | undefined {
-  for (let e = error; e instanceof Error; e = e.cause) {
-    if ("code" in e && typeof e.code === "string" && /^[0-9A-Z]{5}$/.test(e.code)) {
-      return e.code;
-    }
-  }
-  return undefined;
-}
+export { pgErrorCode } from "./errors";

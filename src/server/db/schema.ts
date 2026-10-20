@@ -110,28 +110,39 @@ export const loginAttempts = pgTable(
   (t) => [index().on(t.email, t.attemptedAt)],
 );
 
-export const projects = pgTable("projects", {
-  id: id(),
-  clientName: text().notNull(),
-  code: text().notNull(),
-  description: text(),
-  fieldStartDate: date().notNull(),
-  timezone: text().notNull(),
-  dateFormat: dateFormat().notNull().default("YYYY/MM/DD"),
-  primaryGroupFieldKey: text(),
-  companyLogoPath: text(),
-  clientLogoPath: text(),
-  currentRevisionId: uuid().references((): AnyPgColumn => revisions.id, {
-    onDelete: "restrict",
-  }),
-  lastSignerExecutor: text(),
-  lastSignerClient: text(),
-  deletedAt: timestamptz(),
-  deletedBy: userRef(),
-  createdBy: userRef().notNull(),
-  createdAt: createdAt(),
-  updatedAt: updatedAt(),
-});
+export const projects = pgTable(
+  "projects",
+  {
+    id: id(),
+    clientName: text().notNull(),
+    code: text().notNull(),
+    description: text(),
+    fieldStartDate: date().notNull(),
+    timezone: text().notNull(),
+    dateFormat: dateFormat().notNull().default("YYYY/MM/DD"),
+    primaryGroupFieldKey: text(),
+    companyLogoPath: text(),
+    clientLogoPath: text(),
+    currentRevisionId: uuid().references((): AnyPgColumn => revisions.id, {
+      onDelete: "restrict",
+    }),
+    lastSignerExecutor: text(),
+    lastSignerClient: text(),
+    deletedAt: timestamptz(),
+    deletedBy: userRef(),
+    createdBy: userRef().notNull(),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [
+    // The code identifies the project everywhere (menu, PDF, CSV, delete
+    // confirmation): unique outside the trash, case-insensitively.
+    uniqueIndex("projects_code_unique")
+      .on(sql`lower(${t.code})`)
+      .where(sql`${t.deletedAt} is null`),
+    check("projects_code_trimmed", sql`${t.code} = btrim(${t.code}) and ${t.code} <> ''`),
+  ],
+);
 
 export const projectMembers = pgTable(
   "project_members",

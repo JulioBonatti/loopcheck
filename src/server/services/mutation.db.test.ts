@@ -32,7 +32,8 @@ async function createProject(owner: Actor) {
     .insert(projects)
     .values({
       clientName: "ACME",
-      code: "P-001",
+      // Codes are unique outside the trash
+      code: `P-${crypto.randomUUID().slice(0, 8)}`,
       fieldStartDate: "2026-10-01",
       timezone: "America/Chicago",
       createdBy: owner.userId,
