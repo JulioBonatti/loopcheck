@@ -1,0 +1,276 @@
+﻿Rev,FUNCTIONAL ID,Item,Instrument TAG,Instrument Type,"Status
+(Against P&IDs)",Service Description,Equipment Tag No.,P&ID,Location Plans (HIDE),Wiring Diagram (HIDE),CABLE SCHED STATUS,"System
+","Assigned Phase
+Phase-1 Critical
+Phase-1A Critical Addendum 
+Phase-2 Non Critical ","IO
+Control System
+","IO
+Type",Comments/Concerns (Field Verification Status),"IO
+Low Range
+(4mA) (HIDE)","IO
+High Range
+(20mA) (HIDE)","IO
+Engineering
+Unit (EU) (HIDE)","IO
+Low S.D. Setpoint
+(HIDE)","IO
+Low Alarm Setpoint
+(HIDE)","IO
+High Alarm Setpoint
+(HIDE)","IO
+High S.D. Setpoint
+(HIDE)","IO
+Field Range
+Verified
+(HIDE)","Instrument Status
+Replace/Existing Spare/Pending
+(HIDE)",IO PANEL,POWER SUPPLY,"IO
+Field/Control Room
+(HIDE)","IO
+Control Room/Field Verified
+(HIDE)","IO
+Location Plan Drawing
+(HIDE)","IO
+EXISTING FIELD JB/CUT OVER JB
+(HIDE)","IO
+Annan. Remote Terminal Box Dwg No.
+(HIDE)","IO
+Existing Panel Tag","Annan. Window Color
+(HIDE)","IO
+Panel Drawing No.
+(HIDE)","IO
+Cabinet
+(HIDE)","LOOP
+JB-1 Tag
+(Cut Over)
+(HIDE)","LOOP
+JB-1 Status
+(HIDE)","LOOP
+JB-1 T. Block (Cut Over)
+(HIDE)","LOOP
+JB-1 Point (Positive)
+(HIDE)","LOOP
+JB-1 Point (Negative)
+(HIDE)","LOOP
+Cable Tag to JB-1
+(HIDE)","LOOP
+Cable Pair to JB-1
+(HIDE)","LOOP
+JB-2 Tag
+(Cut Over)
+(HIDE)","LOOP
+JB-2 Status
+(HIDE)","LOOP
+JB-2 T. Block
+(Cut Over)
+(HIDE)","LOOP
+JB-2 Point (Positive)
+(HIDE)","LOOP
+JB-2 Point (Negative)
+(HIDE)","LOOP
+Cable Tag to JB-2
+(HIDE)","LOOP
+Cable Pair to JB-2
+(HIDE)","ABB
+Control
+Module
+(HIDE)","ABB
+CM Typical
+(HIDE)","ABB Cluster No.
+(HIDE)","ABB
+Service Description (HIDE)","ABB
+MTU
+(HIDE)","ABB
+IO 
+Channel
+(HIDE)","ABB 
+SCM
+Part#
+(HIDE)","ABB MTU No. 
+(HIDE)","ABB 
+IO Channel No.
+(HIDE)","ABB
+Primary Graphic (HIDE)",Complex Control? (HIDE),"SQRT
+(HIDE)",Fail Position (Valves),"PID Control Action Shown on LoopDwg 
+Existing
+(HIDE)","PID Control Action New in ABB
+(HIDE)","INSTRUMENT
+New/Reuse/Demo/
+Replace/Existing Spare
+(HIDE)","INSTRUMENT SPECIFICATION DATASHEET
+","INSTRUMENT
+MANUFACTURER","INSTRUMENT
+MODEL","INSTRUMENT
+Historical Cost
+(HIDE)","Design Pressure
+(HIDE)","Design Temperature
+(HIDE)","Current Calibrated Range
+(HIDE)","Photos
+(HIDE)","Comments
+(HIDE)",Typical,Signal Type,Valve Fail Position,Service Description (Automation),LOOP,Equipment
+A,PI-4000,,PI-1112-1,PRESSURE GAUGE,OK,NORTH WELLBAY MANIFOLD PRESSURE,-,X101A1, , , ,HO-HPD-1000, ,-,-,,,,,,,,,,,Mechanical Only,-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+A, , ,PI-1000,PRESSURE GAUGE,OK,A MONTEREY WELLBAY TEST EXCHANGER PRESSURE,-,X101B, , , ,HO-EMX-1000, ,-,-, ,,, , , , , , , ,Mechanical Only,-, , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,, , , , , , , , , , , , , , , , , , , ,,,,South Wellbay Manifold Pressure Gauge,,
+A, , ,PI-4000,PRESSURE GAUGE,OK,A CRUDE PRODUCTION EXCHANGER TIE-IN,-,X101B, , , ,HO-EMX-1200, ,-,-, ,,, , , , , , , ,Mechanical Only,-, , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,, , , , , , , , , , , , , , , , , , , ,,,,South Wellbay Manifold Pressure Gauge,,
+A, , ,PI-3000,PRESSURE GAUGE,OK,B CRUDE PRODUCTION EXCHANGER TIE-IN,-,X101B, , , ,HO-EMX-1300, ,-,-, ,,, , , , , , , ,Mechanical Only,-, , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,, , , , , , , , , , , , , , , , , , , ,,,,South Wellbay Manifold Pressure Gauge,,
+,,,TE-4003,TEMPERATURE ELEMENT,NEW,IGC DISCHARGE TEMPERATURE,,X101B,,,,HO-GHX-1000,,METERING,RTD,,,,,,,,,,,XMV-4003,TBD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+,,,TW-4003,THERMOWELL,NEW,IGC DISCHARGE TEMPERATURE,,X101B,,,,HO-GHX-1000,,METERING,-,,,,,,,,,,,Mechanical Only,-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+A, , ,XMV-4003,MULTIVARIABLE METER,NEW,IGC DISCHARGE FLOW, ,X101B, , , ,HO-GHX-1000, ,METERING,COM, ,,, , , , , , , ,"IJB-1000 
+GAS METERING PANEL",24 VDC EXT. (4-WIRE) +RS-485 (4-WIRE), , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,, , , , , , , , , , , ,ABB,266JST26KQ5A5NOETL1, , , , , , ,,,,South Wellbay Manifold Flow Transmitter,,
+A, , ,FE-4003,SENIOR ORIFICE PLATE,NEW,IGC DISCHARGE FLOW, ,X101B, , , ,HO-GHX-1000, ,METERING,-, ,,, , , , , , , ,Mechanical Only,-, , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,, , , , , , , , , , , , , , , , , , , ,,,,South Wellbay Manifold Orifice Plate,,
+A, , ,XMV-4004,MULTIVARIABLE METER,NEW,HP GAS LIFT HEADER FLOW, ,X101B, , , ,HO-GHX-1000, ,METERING,COM, ,,, , , , , , , ,"IJB-1000 
+GAS METERING PANEL",24 VDC EXT. (4-WIRE) +RS-485 (4-WIRE), , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,, , , , , , , , , , , ,ABB,266JST26KQ5A5NOETL1, , , , , , ,,,,South Wellbay Manifold Flow Transmitter,,
+A, , ,FE-4004,SENIOR ORIFICE PLATE,NEW,HP GAS LIFT HEADER FLOW, ,X101B, , , ,HO-GHX-1000, ,METERING,-, ,,, , , , , , , ,Mechanical Only,-, , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,, , , , , , , , , , , , , , , , , , , ,,,,South Wellbay Manifold Orifice Plate,,
+,,,TE-4004,TEMPERATURE ELEMENT,NEW,HP GAS LIFT HEADER TEMPERATURE,,X101B,,,,HO-GHX-1000,,METERING,RTD,,,,,,,,,,,XMV-4004,TBD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+,,,TW-4004,THERMOWELL,NEW,HP GAS LIFT HEADER TEMPERATURE,,X101B,,,,HO-GHX-1000,,METERING,-,,,,,,,,,,,Mechanical Only,-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+A, , ,PI-6-6,PRESSURE GAUGE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-GHX-1000, ,-,-, ,,, , , , , , , ,Mechanical Only, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Pressure Gauge,,SANDSTONE WELLHEAD H-6
+A, , ,FE-6,ORIFICE PLATE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-GHX-1000, ,-,-, ,,, , , , , , , , , , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Orifice Plate,,SANDSTONE WELLHEAD H-6
+A, , ,XMV-6,MULTIVARIABLE METER,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-GHX-1000, ,METERING,COM, ,0,100,inH2O, , , , , , ,"IJB-1000 
+GAS METERING PANEL",24 VDC EXT. (4-WIRE) +RS-485 (4-WIRE), , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,ABB,266JST26KQ5A5NOETL1, , , , , , ,,,,Sandstone Wellhead H-6 Flow Transmitter,,SANDSTONE WELLHEAD H-6
+,,,TE-6,TEMPERATURE ELEMENT,NEW,,SANDSTONE WELLHEAD H-6,X101C1,,,,HO-GHX-1000,,METERING,RTD,,,,,,,,,,,XMV-6,TBD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+,,,TW-6,THERMOWELL,NEW,,SANDSTONE WELLHEAD H-6,X101C1,,,,HO-GHX-1000,,METERING,-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+A, , ,PIT-6-3,PRESSURE TRANSMITTER,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-GHX-1000, ,Process,AI, ,0,3500,PSIG, , , , , , ,PCS-RIO-200-03,LOOP POWERED (2-WIRE), , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,AIS810,1,2, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Pressure Gauge,,SANDSTONE WELLHEAD H-6
+A, , ,PI-6-5,PRESSURE GAUGE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-HPD-1000, ,-,-, ,,, , , , , , , ,Mechanical Only, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Pressure Gauge,,SANDSTONE WELLHEAD H-6
+A, , ,PI-41,PRESSURE GAUGE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-HPD-1000, ,-,-, ,,, , , , , , , ,Mechanical Only, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Pressure Gauge,,SANDSTONE WELLHEAD H-6
+,,,PIT-466,PRESSURE TRANSMITTER,NEW,,SANDSTONE WELLHEAD H-6,X101C1,,,,HO-WHX-1300,,SIS,AI,,,,,,,,,,,SIS-RIO-200-03,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,1,1,,,,,,,,,EMERSON,4600G42E09A5ARKK5Q4,,,,,,,,,,,,
+A, , ,PSL-466,PNEUMATIC LOW PRESSURE SWITCH,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,-, ,,, , , , , , , , , , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,, , , , , , , , , , , , , , , , , , , ,,,,Sandstone Wellhead H-6 Pneumatic Low Pressure Switch,,SANDSTONE WELLHEAD H-6
+A, , ,PI-306,PRESSURE GAUGE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,-,-, ,,, , , , , , , ,Mechanical Only, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,, , , , , , , , , , , , , , , , , , , ,,,,Sandstone Wellhead H-6 Pressure Gauge,,SANDSTONE WELLHEAD H-6
+A, , ,PIT-6-1,PRESSURE TRANSMITTER,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,PROCESS,AI, ,0,4000,PSIG, , , , , , ,PCS-RIO-200-03,LOOP POWERED (2-WIRE), , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,AIS810,1,1, , , , , , , , ,, , , , , , , ,,,,Sandstone Wellhead H-6 Pressure Gauge,,SANDSTONE WELLHEAD H-6
+A, , ,PIT-6-2,PRESSURE TRANSMITTER,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,AI, ,0,1500,PSIG, , , , , , ,SIS-RIO-200-03,LOOP POWERED (2-WIRE), , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,AIS810,1,2, , , , , , , , ,EMERSON, 4600G52E09A5ARKK5, , , , , , ,,,,Sandstone Wellhead H-6 Pressure Gauge,,SANDSTONE WELLHEAD H-6
+A, , ,PI-6-2,PRESSURE GAUGE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,-,-, ,,, , , , , , , ,Mechanical Only, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , , , , , , , , , ,,,,Sandstone Wellhead H-6 Pressure Gauge,,SANDSTONE WELLHEAD H-6
+A, , ,SDV-316,SHUTDOWN VALVE,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,-,-, ,,, , , , , , , , , , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , , , , , , , , , ,,,,Sandstone Wellhead H-6 Shutdown Valve,,SANDSTONE WELLHEAD H-6
+A, , ,SV-316,SOLENOID VALVE,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,DO, ,,, , , , , , , ,SIS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DOS810,1,3, , , , , , , , ,,, , , , , , ,,,,Single Monterey Sandstone Wellhead H-6 Solenoid Valve,,SANDSTONE WELLHEAD H-6
+A, , ,ZSC-316,LIMIT SWITCH - CLOSE,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,DI, ,,, , , , , , , ,SIS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DIS810,1,4, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Limit Switch - Closed,,SANDSTONE WELLHEAD H-6
+A, , ,ZSO-316,LIMIT SWITCH - OPEN,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,DI, ,,, , , , , , , ,SIS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DIS810,1,5, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Limit Switch - Opened,,SANDSTONE WELLHEAD H-6
+A, , ,SSV-346,SURFACE SAFETY VALVE,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,-,-, ,,, , , , , , , , , , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Surface Safety Valve,,SANDSTONE WELLHEAD H-6
+A, , ,SV-346,SOLENOID VALVE,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,DO, ,,, , , , , , , ,SIS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DOS810,1,6, , , , , , , , ,,, , , , , , ,,,,Single Monterey Sandstone Wellhead H-6 Solenoid Valve,,SANDSTONE WELLHEAD H-6
+A, , ,ZSC-346,LIMIT SWITCH - CLOSE,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,DI, ,,, , , , , , , ,SIS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DIS810,1,7, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Limit Switch - Closed,,SANDSTONE WELLHEAD H-6
+A, , ,ZSO-346,LIMIT SWITCH - OPEN,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,DI, ,,, , , , , , , ,SIS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DIS810,1,8, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Limit Switch - Opened,,SANDSTONE WELLHEAD H-6
+A, , ,PT-1714-3,PRESSURE TRANSMITTER,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,Process,AI, ,0,1500,PSIG, , , , , , ,PCS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,AIS810,1,3, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Pressure Transmitter,,SANDSTONE WELLHEAD H-6
+A, , ,PY-1714,CONTROL VALVE POSITIONER,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,Process,AO, ,,, , , , , , , ,PCS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,AOS810,1,4, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Positioner,,SANDSTONE WELLHEAD H-6
+A, , ,PCV-1714,CONTROL VALVE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,-,-, ,,, , , , , , , , , , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Control Valve,,SANDSTONE WELLHEAD H-6
+A, , ,PI-6-4,PRESSURE GAUGE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,-,-, ,,, , , , , , , ,Mechanical Only, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Pressure Gauge,,SANDSTONE WELLHEAD H-6
+A, , ,PI-396,PRESSURE GAUGE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,-,-, ,,, , , , , , , ,Mechanical Only, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Pressure Gauge,,SANDSTONE WELLHEAD H-6
+,,,PIT-I-H6,PRESSURE TRANSMITTER,NEW,,SANDSTONE WELLHEAD H-6,X101C1,,,,HO-WHX-1300,,SIS,AI,,,,,,,,,,,SIS-RIO-200-03,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,1,9,,,,,,,,,EMERSON,4600G42E09A5ARKK5Q4,,,,,,,,,,,,
+A, , ,PSH-I-H6,PNEUMATIC HIGH PRESSURE SWITCH,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,-, ,,, , , , , , , , , , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 PneumaticHigh Pressure Switch,,SANDSTONE WELLHEAD H-6
+A, , ,PSL-I-H6,PNEUMATIC LOW PRESSURE SWITCH,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,-, ,,, , , , , , , , , , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Pneumatic Low Pressure Switch,,SANDSTONE WELLHEAD H-6
+A, , ,SV-316,SOLENOID VALVE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,DO, ,,, , , , , , , ,SIS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DOS810,1,10, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Low Solenoid Valve,,SANDSTONE WELLHEAD H-6
+A, , ,HS-456,HAND SWITCH,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,SIS,DI, ,,, , , , , , , ,SIS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DIS810,1,11, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Low Hand Switch,,SANDSTONE WELLHEAD H-6
+A, , ,PSL-316,LOW PRESSURE SWITCH,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,Process,DI, ,,, , , , , , , ,PCS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DIS810,1,5, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Low Pressure Switch,,SANDSTONE WELLHEAD H-6
+A, , ,ROV-43A,REMOTE OPERATED VALVE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,Process,-, ,,, , , , , , , , , , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Remote Operated Valve,,SANDSTONE WELLHEAD H-6
+A, , ,ZSO-43A,LIMIT SWITCH - OPEN,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,Process,DI, ,,, , , , , , , ,PCS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DIS810,1,6, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Limit Switch-Open,,SANDSTONE WELLHEAD H-6
+A, , ,ZSO-44A,LIMIT SWITCH - OPEN,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,Process,DI, ,,, , , , , , , ,PCS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DIS810,1,7, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Limit Switch-Open,,SANDSTONE WELLHEAD H-6
+A, , ,ROV-44A,REMOTE OPERATED VALVE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,HO-WHX-1300, ,Process,-, ,,, , , , , , , ,PCS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE,1, , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Remote Operated Valve,,SANDSTONE WELLHEAD H-6
+A, , ,PI-4235,PRESSURE GAUGE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,OUT OF SERVICE, ,-,-, ,,, , , , , , , ,Mechanical Only, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-35 Pressure Gauge,,Single Sandstone Wellhead H-35
+A, , ,PI-3335,PRESSURE GAUGE,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,OUT OF SERVICE, ,-,-, ,,, , , , , , , ,Mechanical Only, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-35 Pressure Gauge,,Single Sandstone Wellhead H-35
+A, , ,PIT-35-1,PRESSURE TRANSMITTER,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,OUT OF SERVICE, ,SIS,AI, ,0,3500,PSIG, , , , , , ,Mechanical Only,LOOP POWERED (2-WIRE), , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,AIS810, , , , , , , , , , ,EMERSON,4600G52E09A5ARKK5, , , , , , ,,,,Sandstone Wellhead H-35 Pressure Transmitter,,Single Sandstone Wellhead H-35
+A, , ,PT-W35,PRESSURE TRANSMITTER,NEW,,SANDSTONE WELLHEAD H-6,X101C1, , , ,OUT OF SERVICE, ,Process,AI, ,0,4000,PSIG, , , , , , ,PCS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,AIS810,,, , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-35 Pressure Transmitter,,Single Sandstone Wellhead H-35
+A, , ,SSV-3435,SURFACE SAFETY VALVE,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,OUT OF SERVICE, ,SIS,-, ,,, , , , , , , , , , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Surface Safety Valve,,Single Sandstone Wellhead H-35
+A, , ,SV-3435,SOLENOID VALVE,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,OUT OF SERVICE, ,SIS,-, ,,, , , , , , , , , , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-35 Solenoid Valve,,Single Sandstone Wellhead H-35
+A, , ,ZSO-3435,LIMIT SWITCH - OPEN,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,OUT OF SERVICE, ,SIS,DO, ,,, , , , , , , ,SIS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DOS810, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Limit Switch - Opened,,Single Sandstone Wellhead H-35
+A, , ,ZSC-3435,LIMIT SWITCH - CLOSE,NIS,,SANDSTONE WELLHEAD H-6,X101C1, , , ,OUT OF SERVICE, ,SIS,DI, ,,, , , , , , , ,SIS-RIO-200-03, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,DIS810, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-6 Limit Switch - Closed,,Single Sandstone Wellhead H-35
+A, , ,PI-35-6,PRESSURE GAUGE,DEMO,,SANDSTONE WELLHEAD H-6,X101C1, , , ,OUT OF SERVICE, ,SIS,, ,,, , , , , , , ,Mechanical Only, , , , ,, , , , , , , , , , , , , , , , , , , , , , , ,,,FALSE, , , , , , , , , , ,,, , , , , , ,,,,Sandstone Wellhead H-35 Pressure Gauge,,Single Sandstone Wellhead H-35
+A,,,PI-2-7,PRESSURE GAUGE,NEW,,,X101C2,,,,HO-GHX-1000,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Gauge,,WHX-1000
+A,,,PIT-2-1,PRESSURE TRANSMITTER,NEW,,,X101C2,,,,HO-GHX-1000,,Process,AI,,0,3500,PSIG,,,,,,,Unassigned,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,1,16,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Transmitter,,WHX-1000
+A,,,FE-242,ORIFICE PLATE,NEW,,,X101C2,,,,HO-GHX-1000,,METERING,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Orifice Plate,,WHX-1000
+,,,TE-242,TEMPERATURE ELEMENT,NEW,,,X101C2,,,,HO-GHX-1000,,METERING,RTD,,,,,,,,,,,Unassigned,TBD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+,,,TW-242,THERMOWELL,NEW,,,X101C2,,,,HO-GHX-1000,,METERING,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+A,,,XMV-242,MULTIVARIABLE METER,NEW,,,X101C2,,,,HO-GHX-1000,,METERING,COM,,0,100,inH2O,,,,,,,"IJB-1000 
+GAS METERING PANEL",24 VDC EXT. (4-WIRE) +RS-485 (4-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,ABB,266JST26KQ5A5NOETL1,,,,,,,,,,Wellhead H-2 Flow Transmitter,,WHX-1000
+A,,,PI-2-3,PRESSURE GAUGE,NEW,,,X101C2,,,,HO-HPD-1000,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Gauge,,WHX-1000
+A,,,PI-2-4,PRESSURE GAUGE,NEW,,,X101C2,,,,HO-HPD-1000,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Gauge,,WHX-1000
+A,,,PI-2-5,PRESSURE GAUGE,NEW,,,X101C2,,,,HO-HPD-1000,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Gauge,,WHX-1000
+A,,,PSH-2,HIGH PRESSURE SWITCH,NEW,,,X101C2,,,,HO-HPD-1000,,Process,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,1,15,,,,,,,,,,,,,,,,,,,,Wellhead H-2 High Pressure Switch,,WHX-1000
+A,,,PIT-2-2,PRESSURE TRANSMITTER,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,AI,,0,3500,PSIG,,,,,,,SIS-RIO-200-03,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,1,12,,,,,,,,,EMERSON,4600G42E09A5ARKK5Q4,,,,,,,,,,Wellhead H-2 Pressure Transmitter,,WHX-1000
+A,,,PI-332,PRESSURE GAUGE,NEW,,,X101C2,,,,HO-WHX-1000,,-,-,,,,,,,,,,,Mechanical Only,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Gauge,,WHX-1000
+A,,,PI-422,PRESSURE GAUGE,NEW,,,X101C2,,,,HO-WHX-1000,,-,-,,,,,,,,,,,Mechanical Only,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Gauge,,WHX-1000
+A,,,SSV-342,SURFACE SAFETY VALVE,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,-,,,,,,,,,,,Mechanical Only,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Surface Safety Valve,,WHX-1000
+A,,,SV-342,SOLENOID VALVE,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,DO,,,,,,,,,,,SIS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DOS810,1,13,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Solenoid Valve,,WHX-1000
+A,,,ZSO-342,LIMIT SWITCH - OPEN,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,DI,,,,,,,,,,,SIS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,1,14,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Limit Switch - Opened,,WHX-1000
+A,,,ZSC-342,LIMIT SWITCH - CLOSE,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,DI,,,,,,,,,,,SIS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,1,15,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Limit Switch - Closed,,WHX-1000
+,,,PIT-46,PRESSURE TRANSMITTER,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,AI,,,3500,PSIG,,,,,,,SIS-RIO-200-03,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,1,16,,,,,,,,,EMERSON,4600G52E09A5ARKK5,,,,,,,,,,Wellhead H-2 Pressure Transmitter,,WHX-1000
+A,,,PSL-46,PNEUMATIC LOW PRESSURE SWITCH,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pneumatic Low Pressure Switch,,WHX-1000
+A,,,PI-302,PRESSURE GAUGE,NEW,,,X101C2,,,,HO-WHX-1000,,-,-,,,,,,,,,,,Mechanical Only,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Gauge,,WHX-1000
+A,,,SDV-312,SHUTDOWN VALVE,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,-,,,,,,,,,,,Mechanical Only,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Shutdown Valve,,WHX-1000
+A,,,SV-312,SOLENOID VALVE,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,DO,,,,,,,,,,,SIS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DOS810,2,1,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Solenoid Valve,,WHX-1000
+A,,,ZSO-312,LIMIT SWITCH - OPEN,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,DI,,,,,,,,,,,SIS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,2,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Limit Switch - Open,,WHX-1000
+A,,,ZSC-312,LIMIT SWITCH - CLOSE,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,DI,,,,,,,,,,,SIS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,3,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Limit Switch - Close,,WHX-1000
+A,,,PCV-2,CONTROL VALVE,NEW,,,X101C2,,,,HO-WHX-1000,,Process,-,,,,,,,,,,,Mechanical Only,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Control Valve,,WHX-1000
+A,,,PY-1720,CONTROL VALVE POSITIONER,NEW,,,X101C2,,,,HO-WHX-1000,,Process,AO,,,,,,,,,,,PCS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AOS810,1,8,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Control Valve Positioner,,WHX-1000
+A,,,PT-1720-3,PRESSURE TRANSMITTER,NEW,,,X101C2,,,,HO-WHX-1000,,Process,AI,,0,1500,PSIG,,,,,,,PCS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,1,9,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Transmitter,,WHX-1000
+A,,,PSL-31,LOW PRESSURE SWITCH,NEW,,,X101C2,,,,HO-WHX-1000,,Process,DI,,,,,,,,,,,PCS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,1,10,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Low Pressure Switch,,WHX-1000
+A,,,SV-45,SOLENOID VALVE,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,DO,,,,,,,,,,,SIS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DOS810,2,4,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Solenoid Valve,,WHX-1000
+A,,,HS-45,HAND SWITCH,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,DI,,,,,,,,,,,SIS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,5,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Hand Switch,,WHX-1000
+A,,,PI-2-6,PRESSURE GAUGE,NEW,,,X101C2,,,,HO-WHX-1000,,-,-,,,,,,,,,,,Mechanical Only,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Gauge,,WHX-1000
+A,,,PI-392,PRESSURE GAUGE,NEW,,,X101C2,,,,HO-WHX-1000,,-,-,,,,,,,,,,,Mechanical Only,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Gauge,,WHX-1000
+,,,PIT-1-H2,PRESSURE TRANSMITTER,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,AI,,0,3000,PSIG,,,,,,,SIS-RIO-200-03,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,2,6,,,,,,,,,EMERSON,4600G42E09A5ARKK5Q4,,,,,,,,,,,,
+A,,,PSH-I-H2,PNEUMATIC HIGH PRESSURE SWITCH,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pneumatic High Pressure Switch,,WHX-1000
+A,,,PSL-I-H2,PNEUMATIC LOW PRESSURE SWITCH,NEW,,,X101C2,,,,HO-WHX-1000,,SIS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pneumatic Low Pressure Switch,,WHX-1000
+A,,,SV-43,SOLENOID VALVE,NEW,,,X101C2,,,,HO-WHX-1000,,Process,DO,,,,,,,,,,,PCS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DOS810,1,11,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Solenoid Valve,,WHX-1000
+A,,,HS-43,HAND SWITCH,NEW,,,X101C2,,,,HO-WHX-1000,,Process,DI,,,,,,,,,,,PCS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,1,12,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Hand Switch,,WHX-1000
+A,,,ZSO-44,LIMIT SWITCH - OPEN,NEW,,,X101C2,,,,HO-WHX-1000,,Process,DI,,,,,,,,,,,PCS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,1,13,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Limit Switch - Open,,WHX-1000
+A,,,ROV-44,REMOTE OPERATED VALVE,NEW,,,X101C2,,,,HO-WHX-1000,,Process,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Remote Operated Valve,,WHX-1000
+A,,,ZSO-43,LIMIT SWITCH - OPEN,NEW,,,X101C2,,,,HO-WHX-1000,,Process,DI,,,,,,,,,,,PCS-RIO-200-03,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,1,14,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Limit Switch - Open,,WHX-1000
+A,,,ROV-43,REMOTE OPERATED VALVE,NEW,,,X101C2,,,,HO-WHX-1000,,Process,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Remote Operated Valve,,WHX-1000
+A,,,PIT-XXXX,PRESSURE TRANSMITTER,O.O.S,,,X101C2,,,,OUT OF SERVICE,,SIS,AI,,,,,,,,,,,Unassigned,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Transmitter,,WHX-1000
+A,,,PI-XXXX,PRESSURE GAUGE,O.O.S,,,X101C2,,,,OUT OF SERVICE,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Pressure Gauge,,WHX-1000
+A,,,SV-13B,SOLENOID VALVE,DEMO,,,X101D1,,,,DEMO,,,DELETED,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Solenoid Valve,,WHX-1100
+A,,,HS-13B,HAND SWITCH,DEMO,,,X101D1,,,,DEMO,,,DELETED,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Hand Switch,,WHX-1100
+A,,,ZSO-13B,LIMIT SWITCH - OPEN,DEMO,,,X101D1,,,,DEMO,,PROCESS,DELETED,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Limit Switch - Open,,WHX-1100
+A,,,ROV-13B,REMOTE OPERATED VALVE,DEMO,,,X101D1,,,,DEMO,,PROCESS,DELETED,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Remote Operated Valve,,WHX-1100
+A,,,ZSO-14B,LIMIT SWITCH - OPEN,DEMO,,,X101D1,,,,DEMO,,PROCESS,DELETED,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Limit Switch - Open,,WHX-1100
+A,,,ROV-14B,REMOTE OPERATED VALVE,DEMO,,,X101D1,,,,DEMO,,PROCESS,DELETED,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Remote Operated Valve,,WHX-1100
+A,,,PIT-3-3,PRESSURE TRANSMITTER,NEW,,,X101D1,,,,HO-CHS-2900,,PROCESS,AI,,0,3500,PSIG,,,,,,,Unassigned,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,2,8,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pressure Transmitter,,WHX-1100
+A,,,PI-163,PRESSURE GAUGE,NEW,,,X101D1,,,,HO-CHS-2900,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pressure Gauge,,WHX-1100
+A,,,PIT-7-3,PRESSURE TRANSMITTER,NEW,,,X101D1,,,,HO-GHX-1000,,PROCESS,AI,,0,3500,PSIG,,,,,,,Unassigned,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,2,6,,,,,,,,,,,,,,,,,,,,Wellhead H-7 Pressure Transmitter,,WHX-1400
+A,,,PI-167,PRESSURE GAUGE,NEW,,,X101D1,,,,HO-GHX-1000,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-7 Pressure Gauge,,WHX-1400
+A,,,FE-2409,ORIFICE PLATE,NEW,,,X101D1,,,,HO-GHX-1000,,METERING,-,,0,2732,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-7 Orifice Plate,,WHX-1400
+,,,TE-2409,TEMPERATURE ELEMENT,NEW,,,X101D1,,,,HO-GHX-1000,,METERING,RTD,,,,,,,,,,,Unassigned,TBD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+,,,TW-2409,THERMOWELL,NEW,,,X101D1,,,,HO-GHX-1000,,METERING,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+A,,,XMV-2409,MULTIVARIABLE METER,NEW,,,X101D1,,,,HO-GHX-1000,,METERING,COM,,0,100,inH2O,,,,,,,"IJB-1000 
+GAS METERING PANEL",24 VDC EXT. (4-WIRE) +RS-485 (4-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,ABB,266JST26KQ5A5NOETL1,,,,,,,,,,Wellhead H-7 Flow Transmitter,,WHX-1400
+A,,,SV-7,SOLENOID VALVE,NEW,,,X101D1,,,,HO-GHX-1000,,SIS,DO,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DOS810,1,11,,,,,,,,,,,,,,,,,,,,Wellhead H-7 Solenoid Valve,,WHX-1400
+A,,,XMV-2403,MULTIVARIABLE METER,NEW,,,X101D1,,,,HO-GHX-1000,,METERING,COM,,0,100,inH2O,,,,,,,"IJB-1000 
+GAS METERING PANEL",24 VDC EXT. (4-WIRE) +RS-485 (4-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,ABB,266JST26KQ5A5NOETL1,,,,,,,,,,Wellhead H-3 Flow Transmitter,,WHX-1100
+,,,TE-2403,TEMPERATURE ELEMENT,NEW,,,X101D1,,,,HO-GHX-1000,,METERING,RTD,,,,,,,,,,,Unassigned,TBD,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+,,,TW-2403,THERMOWELL,NEW,,,X101D1,,,,HO-GHX-1000,,METERING,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,,,
+A,,,FE-2403,ORIFICE PLATE,NEW,,,X101D1,,,,HO-GHX-1000,,METERING,-,,0,2373,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Orifice Plate,,WHX-1100
+A,,,ROV-253,REMOTE OPERATED VALVE,NEW,,,X101D1,,,,HO-GHX-1000,,PROCESS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Remote Operated Valve,,WHX-1100
+A,,,PI-107,PRESSURE GAUGE,NEW,,,X101D1,,,,HO-HPD-1000,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-7 Pressure Gauge,,WHX-1400
+A,,,PI-103,PRESSURE GAUGE,NEW,,,X101D1,,,,HO-HPD-1000,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pressure Gauge,,WHX-1100
+A,,,PSH-113,HIGH PRESSURE SWITCH,NEW,,,X101D1,,,,HO-HPD-1000,,Process,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,7,,,,,,,,,,,,,,,,,,,,Wellhead H-3 High Pressure Switch,,WHX-1100
+A,,,PI-3-1,PRESSURE GAUGE,NEW,,,X101D1,,,,HO-HPD-1000,,-,-,,0,4000,PSIG,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pressure Gauge,,WHX-1100
+A,,,PI-3-6,PRESSURE GAUGE,NEW,,,X101D1,,,,HO-HPD-1000,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pressure Gauge,,WHX-1100
+A,,,PT-3-2,PRESSURE TRANSMITTER,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,AI,,0,3500,PSIG,,,,,,,Unassigned,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,2,10,,,,,,,,,EMERSON,4600G42E09A5ARKK5Q4,,,,,,,,,,Wellhead H-3 Pressure Transmitter,,WHX-1100
+A,,,PI-123,PRESSURE GAUGE,NEW,,,X101D1,,,,HO-WHX-1100,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pressure Gauge,,WHX-1100
+A,,,PI-33,PRESSURE GAUGE,NEW,,,X101D1,,,,HO-WHX-1100,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pressure Gauge,,WHX-1100
+A,,,PIT-3-1,PRESSURE TRANSMITTER,NEW,,,X101D1,,,,HO-WHX-1100,,PROCESS,AI,,0,4000,PSIG,,,,,,,Unassigned,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,2,9,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pressure Transmitter,,WHX-1100
+,,,PT-233,PRESSURE TRANSMITTER,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,AI,,,,,,,,,,,Unassigned,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,2,11,,,,,,,,,EMERSON,4600G52E09A5ARKK5,,,,,,,,,,,,
+A,,,PSL-233,PNEUMATIC PRESSURE SWITCH,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pneumatic Pressure Switch,,WHX-1100
+A,,,SSV-43,SURFACE SAFETY VALVE ,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Surface Safety Valve,,WHX-1100
+A,,,SV-43,SOLENOID VALVE,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,DO,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DOS810,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Solenoid Valve,,WHX-1100
+A,,,ZSO-43,LIMIT SWITCH - OPEN,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,12,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Limit Switch - Open,,WHX-1100
+A,,,ZSC-43,LIMIT SWITCH - CLOSE,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,13,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Limit Switch - Close,,WHX-1100
+A,,,SV-153,SOLENOID VALVE,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,DO,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DOS810,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Solenoid Valve,,WHX-1100
+A,,,HS-153,HAND SWITCH,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,1,12,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Hand Switch,,WHX-1100
+A,,,SDV-13,SHUTDOWN VALVE,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Shutdown Valve,,WHX-1100
+A,,,SV-13,SOLENOID VALVE,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,DO,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DOS810,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Solenoid Valve,,WHX-1100
+A,,,ZSO-13,LIMIT SWITCH - OPEN,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,14,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Limit Switch - Open,,WHX-1100
+A,,,ZSC-13,LIMIT SWITCH - CLOSE,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,15,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Limit Switch - Close,,WHX-1100
+A,,,PCV-453,CONTROL VALVE,NEW,,,X101D1,,,,HO-WHX-1100,,PROCESS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Control Valve,,WHX-1100
+A,,,PY-457,CONTROL VALVE POSITIONER,NEW,,,X101D1,,,,HO-WHX-1100,,PROCESS,AO,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AOS810,2,10,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Control Valve Positioner,,WHX-1100
+A,,,PSL-13,LOW PRESSURE SWITCH,NEW,,,X101D1,,,,HO-WHX-1100,,PROCESS,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,11,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Low Pressure Switch,,WHX-1100
+A,,,PT-453,PRESSURE TRANSMITTER,NEW,,,X101D1,,,,HO-WHX-1100,,PROCESS,AI,,0,1500,PSIG,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,2,12,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pressure Transmitter,,WHX-1100
+A,,,PI-3-4,PRESSURE GAUGE,NEW,,,X101D1,,,,HO-WHX-1100,,-,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pressure Gauge,,WHX-1100
+,,,PT-2-H3,PRESSURE TRANSMITTER,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,AI,,,,,,,,,,,Unassigned,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,2,16,,,,,,,,,EMERSON,4600G42E09A5ARKK5Q4,,,,,,,,,,Wellhead H-3 Pressure Transmitter,,WHX-1100
+A,,,PSL-2-H3,PNEUMATIC LOW PRESSURE SWITCH,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pneumatic Low Pressure Switch,,WHX-1100
+A,,,PSH-2-H3,PNEUMATIC HIGH PRESSURE SWITCH,NEW,,,X101D1,,,,HO-WHX-1100,,SIS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Pneumatic High Pressure Switch,,WHX-1100
+A,,,ZSO-13A,LIMIT SWITCH - OPEN,NEW,,,X101D1,,,,HO-WHX-1100,,PROCESS,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,13,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Limit Switch - Open,,WHX-1100
+A,,,ROV-13A,REMOTE OPERATED VALVE,NEW,,,X101D1,,,,HO-WHX-1100,,PROCESS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Remote Operated Valve,,WHX-1100
+A,,,ZSO-14A,LIMIT SWITCH - OPEN,NEW,,,X101D1,,,,HO-WHX-1100,,PROCESS,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,2,14,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Limit Switch - Open,,WHX-1100
+A,,,ROV-14A,REMOTE OPERATED VALVE,NEW,,,X101D1,,,,HO-WHX-1100,,PROCESS,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Remote Operated Valve,,WHX-1100
+A,,,SV-13A,SOLENOID VALVE,NEW,,,X101D1,,,,HO-WHX-1100,,,DO,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DOS810,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Solenoid Valve,,WHX-1100
+A,,,HS-13A,HAND SWITCH,NEW,,,X101D1,,,,HO-WHX-1100,,,DI,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,DIS810,,,,,,,,,,,,,,,,,,,,,,Wellhead H-3 Hand Switch,,WHX-1100
+A,,,ROV-252,REMOTE OPERATED VALVE,NEW,,,X101D1,,,,HO-WHX-1400,,Process,-,,,,,,,,,,,Unassigned,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,FALSE,,,,,,,,,,,,,,,,,,,,,,Wellhead H-2 Remote Operated Valve,,WHX-1000
+A,,,PT-7-1,PRESSURE TRANSMITTER,NEW,,,X101D1,,,,HO-WHX-1400,,SIS,AI,,0,4000,PSIG,,,,,,,Unassigned,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,2,7,,,,,,,,,EMERSON,4600G42E09A5ARKK5Q4,,,,,,,,,,Wellhead H-7 Pressure Transmitter,,WHX-1400
+A,,,PIT-7-2,PRESSURE TRANSMITTER,NEW,,,X101D1,,,,HO-WHX-1400,,Process,AI,,0,1500,PSIG,,,,,,,Unassigned,LOOP POWERED (2-WIRE),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,AIS810,2,1,,,,,,,,,,,,,,,,,,,,Wellhead H-7 Pressure Transmitter,,WHX-1400
