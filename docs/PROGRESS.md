@@ -5,7 +5,7 @@
 | Passo | Escopo | Status |
 |---|---|---|
 | 1 | Setup: Next.js, TS strict, Tailwind + shadcn/ui, ESLint, Vitest, Playwright | ✅ |
-| 2 | Banco: Docker Compose, Drizzle, schema §4, migração inicial | ⏳ |
+| 2 | Banco: Docker Compose, Drizzle, schema §4, migração inicial | ✅ |
 | 3 | Infra da camada de serviço: transação + audit, erros, permissões, datas | ⏳ |
 | 4 | Autenticação (REQ-AUTH-01…05, 08) | ⏳ |
 | 5 | Casca do app + My account (REQ-UI-01/02/04, REQ-ACC-01/03, REQ-AUTH-06/07) | ⏳ |

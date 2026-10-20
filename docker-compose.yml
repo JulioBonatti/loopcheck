@@ -1,0 +1,23 @@
+# Development only: PostgreSQL. The Next.js app runs locally (`npm run dev`).
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: loopcheck
+      POSTGRES_PASSWORD: loopcheck
+      POSTGRES_DB: loopcheck
+    ports:
+      - "5432:5432"
+    volumes:
+      # Postgres 18 keeps its data under /var/lib/postgresql/<major>/
+      - db-data:/var/lib/postgresql
+      # Runs once, on an empty volume: creates the integration test database
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U loopcheck -d loopcheck"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+volumes:
+  db-data:

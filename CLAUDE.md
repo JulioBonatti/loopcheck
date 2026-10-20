@@ -45,7 +45,14 @@ Next.js (App Router) · TypeScript strict · PostgreSQL · Drizzle ORM · Zod ·
 
 ## Comandos
 
-> Preencher conforme forem criados na Entrega 1 (`dev`, `db:up`, `db:migrate`, `db:seed`, `lint`, `typecheck`, `test`, `test:e2e`).
+> Preencher conforme forem criados na Entrega 1 (falta `db:seed`).
+
+- `npm run db:up` / `db:down`: Postgres 18 via docker compose (cria também `loopcheck_test`).
+- `npm run db:generate`: gera migração a partir de `src/server/db/schema.ts`. SQL manual: `npx drizzle-kit generate --custom --name <nome>`.
+- `npm run db:migrate`: aplica as migrações em `DATABASE_URL` (`.env.local`, copiado de `.env.example`).
+- `npm run dev` · `npm run lint` · `npm run typecheck`
+- `npm test`: Vitest, projetos `unit` e `db`. O `db` recria o schema de `loopcheck_test` a partir das migrações (precisa de `db:up`). Só um: `npx vitest run --project unit`.
+- `npm run test:e2e`: Playwright.
 
 ## Estrutura (alvo)
 
