@@ -6,7 +6,6 @@ import {
   generateTemporaryPassword,
   purgeProject,
   restoreProject,
-  setAdmin,
   transferOwnership,
 } from "@/server/services/admin";
 import { type ActionError, type ActionResult, toActionResult } from "@/server/services/errors";
@@ -30,10 +29,6 @@ async function adminChange<T>(
 /** REQ-AUTH-07: the password comes back once, to be copied by the admin. */
 export async function generateTemporaryPasswordAction(userId: string) {
   return adminChange((actor) => generateTemporaryPassword(actor, userId));
-}
-
-export async function setAdminAction(userId: string, isAdmin: boolean) {
-  return adminChange((actor) => setAdmin(actor, { userId, isAdmin }), { projectLists: true });
 }
 
 export async function transferOwnershipAction(projectId: string, userId: string) {

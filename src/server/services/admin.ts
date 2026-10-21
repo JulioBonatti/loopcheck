@@ -1,9 +1,10 @@
 /**
  * Administration (SPEC §5.3, last rows; REQ-ACC-04). Admin-only, and admins
- * get no access to project content through it (REQ-PERM-03).
+ * get no access to project content through it (REQ-PERM-03). Who is admin is
+ * not managed here: IT does it in the database (`npm run admin:create`).
  */
 import { randomInt } from "node:crypto";
-import { and, count, eq, isNotNull, isNull, sql } from "drizzle-orm";
+import { and, eq, isNotNull, isNull, sql } from "drizzle-orm";
 import { z } from "zod";
 import { hashPassword } from "@/server/auth/password";
 import type { Db, Tx } from "@/server/db";
@@ -28,7 +29,7 @@ import {
   testProcedures,
   users,
 } from "@/server/db/schema";
-import { ForbiddenError, NotFoundError, ValidationError } from "./errors";
+import { NotFoundError, ValidationError } from "./errors";
 import { mutate } from "./mutation";
 import { type Actor, requireAdmin } from "./permissions";
 
@@ -84,57 +85,6 @@ export function generateTemporaryPassword(actor: Actor, userId: string, { db }: 
         after: { passwordHash, mustChangePassword: true },
       });
       return { password };
-    },
-  });
-}
-
-/**
- * Make or remove an admin. There is always at least one admin (REQ-PERM-04,
- * applied to everyone): admin changes are serialized, so two admins removing
- * each other at once cannot leave the system without one.
- */
-export function setAdmin(actor: Actor, input: unknown, { db }: { db?: Db } = {}) {
-  return mutate({
-    db,
-    actor,
-    authorize: () => requireAdmin(actor),
-    schema: z.object({ userId: z.string(), isAdmin: z.boolean() }),
-    input,
-    run: async ({ tx, audit }, data) => {
-      await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext('loopcheck.admins'))`);
-      // The actor may have lost the role while waiting for the lock.
-      const [me] = await tx
-        .select({ isAdmin: users.isAdmin })
-        .from(users)
-        .where(eq(users.id, actor.userId));
-      if (!me?.isAdmin) throw new ForbiddenError();
-
-      const user = await lockUser(tx, data.userId);
-      if (user.isAdmin === data.isAdmin) {
-        throw new ValidationError(
-          data.isAdmin
-            ? "This user is already an administrator."
-            : "This user is not an administrator.",
-        );
-      }
-      if (!data.isAdmin) {
-        const [{ admins }] = await tx
-          .select({ admins: count() })
-          .from(users)
-          .where(eq(users.isAdmin, true));
-        if (admins <= 1) {
-          throw new ValidationError("There must be at least one administrator.");
-        }
-      }
-
-      await tx.update(users).set({ isAdmin: data.isAdmin }).where(eq(users.id, data.userId));
-      audit({
-        action: "admin.set_admin",
-        entityType: "user",
-        entityId: data.userId,
-        before: { isAdmin: user.isAdmin },
-        after: { isAdmin: data.isAdmin },
-      });
     },
   });
 }

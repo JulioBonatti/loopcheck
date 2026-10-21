@@ -2,7 +2,7 @@
 
 import { CheckIcon, CopyIcon, KeyRoundIcon } from "lucide-react";
 import { useDeferredValue, useState } from "react";
-import { generateTemporaryPasswordAction, setAdminAction } from "@/app/(app)/admin/actions";
+import { generateTemporaryPasswordAction } from "@/app/(app)/admin/actions";
 import { SearchInput } from "@/components/app/search-input";
 import { useAction } from "@/components/app/use-action";
 import { Badge } from "@/components/ui/badge";
@@ -62,15 +62,13 @@ export function UsersPanel({ users, currentUserId }: { users: UserRow[]; current
   );
 }
 
+/** Admin status is not edited here: IT manages it in the database. */
 function UserCard({ user, isSelf }: { user: UserRow; isSelf: boolean }) {
-  const { pending, run } = useAction();
-
   return (
     <div
       role="group"
       aria-label={user.name}
-      aria-busy={pending || undefined}
-      className="bg-card ring-foreground/10 grid gap-2 rounded-lg p-3 ring-1 aria-busy:opacity-60"
+      className="bg-card ring-foreground/10 grid gap-2 rounded-lg p-3 ring-1"
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
@@ -89,24 +87,11 @@ function UserCard({ user, isSelf }: { user: UserRow; isSelf: boolean }) {
         {user.projectCount} {user.projectCount === 1 ? "project" : "projects"} · Joined{" "}
         {user.joined}
       </p>
-      <div className="flex flex-wrap gap-2">
-        {!isSelf && <TemporaryPasswordButton user={user} />}
-        <Button
-          variant={user.isAdmin ? "destructive" : "outline"}
-          size="xs"
-          disabled={pending}
-          onClick={() =>
-            run(
-              () => setAdminAction(user.id, !user.isAdmin),
-              user.isAdmin
-                ? `${user.name} is no longer an administrator.`
-                : `${user.name} is now an administrator.`,
-            )
-          }
-        >
-          {user.isAdmin ? "Remove admin" : "Make admin"}
-        </Button>
-      </div>
+      {!isSelf && (
+        <div className="flex flex-wrap gap-2">
+          <TemporaryPasswordButton user={user} />
+        </div>
+      )}
     </div>
   );
 }

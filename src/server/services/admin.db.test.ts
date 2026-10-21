@@ -11,7 +11,6 @@ import {
   projects,
   revisions,
   tags,
-  users,
 } from "@/server/db/schema";
 import { getTestDb, truncateAll } from "@/server/db/testing";
 import { listAllProjects, listTrashedProjects, listUsers } from "@/server/queries/admin";
@@ -20,7 +19,6 @@ import {
   generateTemporaryPasswordText,
   purgeProject,
   restoreProject,
-  setAdmin,
   transferOwnership,
 } from "./admin";
 import { signIn, validateSession } from "./auth";
@@ -63,12 +61,17 @@ describe("admin actions are for admins only (SPEC §5.3)", () => {
     const user = actorOf(await createUser(db));
     const other = await createUser(db);
 
+    const project = await createProject(user, projectInput("NA-1"), { db });
+
     await expect(generateTemporaryPassword(user, other.id, { db })).rejects.toThrow(ForbiddenError);
-    await expect(setAdmin(user, { userId: user.userId, isAdmin: true }, { db })).rejects.toThrow(
+    await expect(
+      transferOwnership(user, { projectId: project.id, userId: other.id }, { db }),
+    ).rejects.toThrow(ForbiddenError);
+    await deleteProject(user, project.id, { confirmCode: "NA-1" }, { db });
+    await expect(restoreProject(user, project.id, { db })).rejects.toThrow(ForbiddenError);
+    await expect(purgeProject(user, project.id, { confirmCode: "NA-1" }, { db })).rejects.toThrow(
       ForbiddenError,
     );
-    const [row] = await db.select().from(users).where(eq(users.id, user.userId));
-    expect(row.isAdmin).toBe(false);
   });
 });
 
@@ -103,41 +106,6 @@ describe("generateTemporaryPassword (REQ-AUTH-07)", () => {
     await expect(generateTemporaryPassword(boss, boss.userId, { db })).rejects.toThrow(
       ValidationError,
     );
-  });
-});
-
-describe("setAdmin (REQ-PERM-04)", () => {
-  it("makes and removes admins", async () => {
-    const boss = await admin();
-    const user = await createUser(db);
-
-    await setAdmin(boss, { userId: user.id, isAdmin: true }, { db });
-    await setAdmin(boss, { userId: boss.userId, isAdmin: false }, { db });
-
-    const admins = await db.select().from(users).where(eq(users.isAdmin, true));
-    expect(admins.map((u) => u.id)).toEqual([user.id]);
-  });
-
-  it("never removes the last admin, not even oneself", async () => {
-    const boss = await admin();
-
-    const error = await rejection(setAdmin(boss, { userId: boss.userId, isAdmin: false }, { db }));
-
-    expect((error as Error).message).toBe("There must be at least one administrator.");
-  });
-
-  it("keeps one admin when two admins remove each other at the same time", async () => {
-    const ana = await admin();
-    const bob = await admin();
-
-    const results = await Promise.allSettled([
-      setAdmin(ana, { userId: bob.userId, isAdmin: false }, { db }),
-      setAdmin(bob, { userId: ana.userId, isAdmin: false }, { db }),
-    ]);
-
-    expect(results.filter((r) => r.status === "fulfilled")).toHaveLength(1);
-    const admins = await db.select().from(users).where(eq(users.isAdmin, true));
-    expect(admins).toHaveLength(1);
   });
 });
 
