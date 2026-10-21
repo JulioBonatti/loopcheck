@@ -3,7 +3,7 @@
  * (REQ-AUTH-04). The cookie only carries the random token.
  */
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { connection } from "next/server";
 import { cache } from "react";
 import { SESSION_COOKIE_NAME, sessionCookieOptions } from "@/lib/session-cookie";
@@ -54,4 +54,14 @@ export async function requireUser(options: RequireOptions = {}): Promise<Session
 export async function requireActor(options: RequireOptions = {}): Promise<Actor> {
   const user = await requireUser(options);
   return { userId: user.id, isAdmin: user.isAdmin };
+}
+
+/**
+ * For Administration pages: "not found" for non-admins. Layouts and pages
+ * render in parallel, so every admin page calls this itself.
+ */
+export async function requireAdminUser(): Promise<SessionUser> {
+  const user = await requireUser();
+  if (!user.isAdmin) notFound();
+  return user;
 }

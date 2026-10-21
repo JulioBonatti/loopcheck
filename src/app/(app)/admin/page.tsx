@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { UsersPanel } from "@/components/admin/users-panel";
 import { formatDate } from "@/lib/dates";
-import { requireUser } from "@/server/auth/session";
+import { requireAdminUser } from "@/server/auth/session";
 import { listUsers } from "@/server/queries/admin";
 
 const UTC_DATES = { timezone: "UTC", dateFormat: "YYYY/MM/DD" } as const;
@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Users · Administration · LoopCheck
 
 /** Administration → Users. Dates without a project: YYYY/MM/DD in UTC. */
 export default async function AdminUsersPage() {
-  const user = await requireUser();
+  const user = await requireAdminUser();
   const users = await listUsers();
   return (
     <UsersPanel

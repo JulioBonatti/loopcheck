@@ -1,14 +1,12 @@
-import { notFound } from "next/navigation";
 import { AdminTabs } from "@/components/admin/admin-tabs";
-import { requireUser } from "@/server/auth/session";
+import { requireAdminUser } from "@/server/auth/session";
 
 /**
  * Administration (REQ-ACC-04), a page of its own (decision of 2026-10-21).
  * Non-admins get "not found"; every action checks again on the server.
  */
 export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
-  const user = await requireUser();
-  if (!user.isAdmin) notFound();
+  await requireAdminUser();
 
   return (
     <>

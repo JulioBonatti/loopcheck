@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { ProjectsPanel } from "@/components/admin/projects-panel";
+import { requireAdminUser } from "@/server/auth/session";
 import { formatDate } from "@/lib/dates";
 import { listAllProjects, listUsers } from "@/server/queries/admin";
 
 export const metadata: Metadata = { title: "Projects · Administration · LoopCheck" };
 
-/** Administration → Projects (REQ-PROJ-05). The layout checks the admin role. */
+/** Administration → Projects (REQ-PROJ-05). */
 export default async function AdminProjectsPage() {
+  await requireAdminUser();
   const [projects, users] = await Promise.all([listAllProjects(), listUsers()]);
   return (
     <ProjectsPanel

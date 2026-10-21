@@ -9,8 +9,8 @@ async function newUser(browser: Browser, first: string, last: string) {
 }
 
 async function openProjectSettings(page: Page, projectUrl: string) {
-  await page.goto(`${projectUrl}/settings`);
-  await expect(page.getByText("Members", { exact: true })).toBeVisible();
+  await page.goto(`${projectUrl}/settings/members`);
+  await expect(page.getByLabel("Filter members")).toBeVisible();
 }
 
 // REQ-MEM-01…05, REQ-SET-07, REQ-ACC-02, REQ-PERM-01/02

@@ -6,7 +6,8 @@ import { and, asc, desc, eq, isNull, sql } from "drizzle-orm";
 import { cache } from "react";
 import { z } from "zod";
 import type { DateFormat } from "@/lib/dates";
-import type { ProjectRole } from "@/lib/permissions";
+import { notFound } from "next/navigation";
+import { type ProjectRole, roleCan } from "@/lib/permissions";
 import { type Db, db as defaultDb } from "@/server/db";
 import { auditLog, projectMembers, projects, revisions, tags } from "@/server/db/schema";
 
@@ -132,4 +133,15 @@ export async function getRecentProject(
     .orderBy(desc(auditLog.id))
     .limit(1);
   return row ?? null;
+}
+
+/**
+ * The project of a settings page, or "not found" for users who may not edit
+ * its settings. Layouts and pages render in parallel, so every settings page
+ * calls this itself instead of relying on the layout.
+ */
+export async function requireSettingsProject(userId: string, projectId: string) {
+  const project = await getProjectForUserOnce(userId, projectId);
+  if (!project || !roleCan(project.role, "settings.edit")) notFound();
+  return project;
 }

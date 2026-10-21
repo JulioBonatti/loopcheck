@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { TrashPanel } from "@/components/admin/trash-panel";
+import { requireAdminUser } from "@/server/auth/session";
 import { formatDateTime } from "@/lib/dates";
 import { listTrashedProjects, listUsers } from "@/server/queries/admin";
 
 export const metadata: Metadata = { title: "Trash · Administration · LoopCheck" };
 
-/** Administration → Trash (REQ-PROJ-04). The layout checks the admin role. */
+/** Administration → Trash (REQ-PROJ-04). */
 export default async function AdminTrashPage() {
+  await requireAdminUser();
   const [projects, users] = await Promise.all([listTrashedProjects(), listUsers()]);
   return (
     <TrashPanel

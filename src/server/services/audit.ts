@@ -2,6 +2,7 @@
  * Audit trail (SPEC §12). Entries are written by `mutate` inside the same
  * transaction as the change they describe (ARQ-01).
  */
+import { stableJson } from "@/lib/json";
 import type { Tx } from "@/server/db";
 import { auditLog } from "@/server/db/schema";
 
@@ -17,15 +18,6 @@ export const REDACTED = "[redacted]";
 function normalize(value: unknown): unknown {
   if (value instanceof Date) return value.toISOString();
   return value === undefined ? null : value;
-}
-
-/** JSON with object keys sorted: Postgres jsonb does not keep key order. */
-function stableJson(value: unknown): string {
-  return JSON.stringify(value, (_, v: unknown) =>
-    v && typeof v === "object" && !Array.isArray(v)
-      ? Object.fromEntries(Object.entries(v).sort(([a], [b]) => a.localeCompare(b)))
-      : v,
-  );
 }
 
 function sameValue(a: unknown, b: unknown): boolean {
