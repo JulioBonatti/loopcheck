@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ProjectCard } from "@/components/app/project-card";
+import { ProjectGrid } from "@/components/app/project-grid";
 import { NewProjectDialog } from "@/components/project/new-project-dialog";
 import { requireUser } from "@/server/auth/session";
 import { listMyProjectsOnce } from "@/server/queries/projects";
@@ -22,11 +22,7 @@ export default async function ProjectsPage() {
           No projects yet. Create one, or ask a project owner to invite you.
         </p>
       ) : (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-3">
-          {projects.map((p) => (
-            <ProjectCard key={p.id} project={p} />
-          ))}
-        </div>
+        <ProjectGrid projects={projects} />
       )}
     </section>
   );

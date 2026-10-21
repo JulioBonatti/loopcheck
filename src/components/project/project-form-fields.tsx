@@ -3,9 +3,18 @@
 import { useId, useSyncExternalStore } from "react";
 import { FormField } from "@/components/auth/form-field";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { dateFormats } from "@/lib/dates";
 import type { FieldErrors } from "@/server/services/errors";
+
+const DATE_FORMAT_ITEMS = dateFormats.map((f) => ({ value: f, label: f }));
 
 let zones: string[] | undefined;
 const NO_ZONES: string[] = [];
@@ -99,18 +108,18 @@ export function ProjectFormFields({
         </datalist>
         <div className="grid content-start gap-1.5">
           <Label htmlFor="dateFormat">Date format</Label>
-          <select
-            id="dateFormat"
-            name="dateFormat"
-            defaultValue={values.dateFormat}
-            className="border-input focus-visible:border-ring focus-visible:ring-ring/50 dark:bg-input/30 h-8 rounded-lg border bg-transparent px-2 text-sm outline-none focus-visible:ring-3"
-          >
-            {dateFormats.map((f) => (
-              <option key={f} value={f}>
-                {f}
-              </option>
-            ))}
-          </select>
+          <Select name="dateFormat" defaultValue={values.dateFormat} items={DATE_FORMAT_ITEMS}>
+            <SelectTrigger id="dateFormat" className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {DATE_FORMAT_ITEMS.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>

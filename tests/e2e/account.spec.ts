@@ -4,7 +4,7 @@ import { newAccount, signIn, signUp, withDb } from "./helpers";
 test("the header menu opens on hover and leads to My account", async ({ page }) => {
   await signUp(page, newAccount());
 
-  await page.getByRole("button", { name: "Open navigation" }).hover();
+  await page.getByRole("button", { name: "Open account menu" }).hover();
   await page.getByRole("menuitem", { name: "My account" }).click();
 
   await expect(page).toHaveURL(/\/account$/);
@@ -23,7 +23,7 @@ test("change password, then sign in with the new one", async ({ page }) => {
   await page.getByRole("button", { name: "Change password" }).click();
   await expect(page.getByText("Password changed.")).toBeVisible();
 
-  await page.getByRole("button", { name: "Open navigation" }).hover();
+  await page.getByRole("button", { name: "Open account menu" }).hover();
   await page.getByRole("menuitem", { name: "Sign out" }).click();
   await expect(page).toHaveURL(/\/sign-in$/);
 

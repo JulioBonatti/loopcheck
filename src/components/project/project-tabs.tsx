@@ -10,7 +10,7 @@ const TABS = [
   { segment: "loop-check", label: "Loop Check" },
   { segment: "io-list", label: "IO List" },
   { segment: "reports", label: "Reports" },
-  { segment: "settings", label: "Settings" },
+  { segment: "settings", label: "Project Settings" },
 ] as const;
 
 /** The four project tabs (REQ-UI-03). Viewers do not see Settings (§7.6). */

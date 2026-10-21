@@ -1,8 +1,8 @@
 "use server";
 
-import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireActor } from "@/server/auth/session";
+import { refreshProjectLists } from "../refresh";
 import { type ActionError, toActionResult } from "@/server/services/errors";
 import { createProject, deleteProject, updateProject } from "@/server/services/projects";
 
@@ -34,6 +34,7 @@ export async function createProjectAction(
   const values = readProjectForm(formData);
   const result = await toActionResult(() => createProject(actor, values));
   if (!result.ok) return { error: result.error, values };
+  refreshProjectLists();
   redirect(`/projects/${result.data.id}/loop-check`);
 }
 
@@ -47,7 +48,7 @@ export async function updateProjectAction(
   const values = readProjectForm(formData);
   const result = await toActionResult(() => updateProject(actor, projectId, values));
   if (!result.ok) return { error: result.error, values };
-  refresh();
+  refreshProjectLists();
   return { saved: true, values };
 }
 
@@ -64,5 +65,6 @@ export async function deleteProjectAction(
     deleteProject(actor, projectId, { confirmCode: String(formData.get("confirmCode") ?? "") }),
   );
   if (!result.ok) return { error: result.error };
+  refreshProjectLists();
   redirect("/");
 }

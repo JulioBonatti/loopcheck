@@ -12,7 +12,8 @@ test("create a project, edit its settings and delete it", async ({ page }) => {
   await expect(dialog.getByLabel("Field activities start date")).not.toHaveValue("");
   await dialog.getByLabel("Client name").fill("ACME Mining");
   await dialog.getByLabel("Project code").fill("P-100");
-  await dialog.getByLabel("Date format").selectOption("MM/DD/YYYY");
+  await dialog.getByLabel("Date format").click();
+  await page.getByRole("option", { name: "MM/DD/YYYY" }).click();
   await dialog.getByRole("button", { name: "Create project" }).click();
 
   // Lands on the Loop Check tab, with the project header and the four tabs
@@ -20,12 +21,12 @@ test("create a project, edit its settings and delete it", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "ACME Mining" })).toBeVisible();
   await expect(page.getByText("No IO list imported")).toBeVisible();
   const tabs = page.getByRole("navigation", { name: "Project" });
-  for (const tab of ["Loop Check", "IO List", "Reports", "Settings"]) {
+  for (const tab of ["Loop Check", "IO List", "Reports", "Project Settings"]) {
     await expect(tabs.getByRole("link", { name: tab })).toBeVisible();
   }
 
   // Settings: edit, and the header follows
-  await tabs.getByRole("link", { name: "Settings" }).click();
+  await tabs.getByRole("link", { name: "Project Settings" }).click();
   await page.getByLabel("Client name").fill("ACME Mining Co.");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByText("Saved.")).toBeVisible();

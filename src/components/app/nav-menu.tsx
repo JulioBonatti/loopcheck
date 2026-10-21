@@ -1,29 +1,24 @@
 "use client";
 
-import { FolderKanbanIcon, LogOutIcon, MenuIcon, PlusIcon, UserIcon } from "lucide-react";
+import { FolderKanbanIcon, MenuIcon, PlusIcon } from "lucide-react";
 import Link from "next/link";
-import { useTransition } from "react";
-import { signOutAction } from "@/app/(auth)/actions";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuLinkItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 export type NavProject = { id: string; clientName: string; code: string };
 
 /**
- * Main navigation (REQ-UI-01), folded into the header's left corner so the
- * pages keep the full width. Opens on hover, click or keyboard.
+ * Project navigation (REQ-UI-01), folded into the header's left corner so the
+ * pages keep the full width. Opens on hover, click or keyboard. Account
+ * entries live in the menu at the right corner (`AccountMenu`).
  */
 export function NavMenu({ projects }: { projects: NavProject[] }) {
-  const [signingOut, startSignOut] = useTransition();
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -59,16 +54,6 @@ export function NavMenu({ projects }: { projects: NavProject[] }) {
             New project
           </DropdownMenuLinkItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuLinkItem render={<Link href="/account" />}>
-          <UserIcon />
-          My account
-        </DropdownMenuLinkItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem disabled={signingOut} onClick={() => startSignOut(() => signOutAction())}>
-          <LogOutIcon />
-          Sign out
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

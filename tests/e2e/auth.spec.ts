@@ -20,7 +20,7 @@ test("sign up, sign out and sign in again", async ({ page }) => {
   await expect(page.getByText("Ana Lima")).toBeVisible();
 
   // Sign out → protected pages are closed again
-  await page.getByRole("button", { name: "Open navigation" }).hover();
+  await page.getByRole("button", { name: "Open account menu" }).hover();
   await page.getByRole("menuitem", { name: "Sign out" }).click();
   await expect(page).toHaveURL(/\/sign-in$/);
   await page.goto("/");
