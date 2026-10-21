@@ -22,6 +22,13 @@
       "when": 1792528524300,
       "tag": "0002_project_code_unique",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792588473890,
+      "tag": "0003_audit_log_actor_index",
+      "breakpoints": true
     }
   ]
 }

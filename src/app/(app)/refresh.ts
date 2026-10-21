@@ -1,8 +1,8 @@
 import { revalidatePath } from "next/cache";
 
 /**
- * The header menu lists the user's projects, and layouts are kept across
- * navigations: actions that change the list must refresh every layout.
+ * Layouts (the header's "Recent" project) and pages are kept across
+ * navigations: actions that change the user's projects refresh them all.
  * (A plain module, not "use server": it must not be callable from the browser.)
  */
 export function refreshProjectLists(): void {

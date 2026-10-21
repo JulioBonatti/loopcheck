@@ -1,8 +1,9 @@
 import { expect, test } from "@playwright/test";
+import { newAccount } from "./helpers";
 
 // REQ-AUTH-01, 02, 04: the whole flow through a real browser.
 test("sign up, sign out and sign in again", async ({ page }) => {
-  const email = `ana.${Date.now()}@example.com`;
+  const { email } = newAccount();
 
   // Protected pages send visitors to sign in
   await page.goto("/");

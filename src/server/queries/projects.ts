@@ -2,13 +2,13 @@
  * Read-only project queries. Reads do not go through `mutate`, but they are
  * always scoped to the signed-in user's memberships.
  */
-import { and, asc, eq, isNull, sql } from "drizzle-orm";
+import { and, asc, desc, eq, isNull, sql } from "drizzle-orm";
 import { cache } from "react";
 import { z } from "zod";
 import type { DateFormat } from "@/lib/dates";
 import type { ProjectRole } from "@/lib/permissions";
 import { type Db, db as defaultDb } from "@/server/db";
-import { projectMembers, projects, revisions, tags } from "@/server/db/schema";
+import { auditLog, projectMembers, projects, revisions, tags } from "@/server/db/schema";
 
 export type ProjectSummary = {
   id: string;
@@ -108,3 +108,28 @@ export async function getProjectForUser(
 export const getProjectForUserOnce = cache((userId: string, projectId: string) =>
   getProjectForUser(userId, projectId),
 );
+
+export type RecentProject = { id: string; clientName: string; code: string };
+
+/**
+ * The project of the user's latest change (any audited action: checkout,
+ * issue, IO list, settings…), among projects they still belong to and that are
+ * not in the trash. Shown as "Recent" in the menu (decision of 2026-10-21).
+ */
+export async function getRecentProject(
+  userId: string,
+  { db = defaultDb }: { db?: Db } = {},
+): Promise<RecentProject | null> {
+  const [row] = await db
+    .select({ id: projects.id, clientName: projects.clientName, code: projects.code })
+    .from(auditLog)
+    .innerJoin(projects, eq(projects.id, auditLog.projectId))
+    .innerJoin(
+      projectMembers,
+      and(eq(projectMembers.projectId, projects.id), eq(projectMembers.userId, userId)),
+    )
+    .where(and(eq(auditLog.actorId, userId), isNull(projects.deletedAt)))
+    .orderBy(desc(auditLog.id))
+    .limit(1);
+  return row ?? null;
+}

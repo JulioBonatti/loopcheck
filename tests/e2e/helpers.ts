@@ -4,14 +4,12 @@ import { E2E_DATABASE_URL } from "./env";
 
 export type TestAccount = { firstName: string; lastName: string; email: string; password: string };
 
-let seq = 0;
-
+/** A fresh account; random e-mails, since test files run in parallel workers. */
 export function newAccount(firstName = "Ana", lastName = "Lima"): TestAccount {
-  seq += 1;
   return {
     firstName,
     lastName,
-    email: `${firstName.toLowerCase()}.${Date.now()}.${seq}@example.com`,
+    email: `${firstName.toLowerCase()}.${crypto.randomUUID().slice(0, 12)}@example.com`,
     password: "secret",
   };
 }

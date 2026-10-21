@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { AccountMenu } from "@/components/app/account-menu";
 import { NavMenu } from "@/components/app/nav-menu";
 import { requireUser } from "@/server/auth/session";
-import { listMyProjectsOnce } from "@/server/queries/projects";
+import { getRecentProject } from "@/server/queries/projects";
 
 /**
  * Pages that need a signed-in user. Navigation lives in two header menus
@@ -19,11 +19,11 @@ export default function AppLayout({ children }: LayoutProps<"/">) {
 
 async function SignedIn({ children }: { children: React.ReactNode }) {
   const user = await requireUser();
-  const projects = await listMyProjectsOnce(user.id);
+  const recent = await getRecentProject(user.id);
   return (
     <div className="flex flex-1 flex-col">
       <header className="bg-background sticky top-0 z-10 flex h-11 items-center gap-2 border-b px-2">
-        <NavMenu projects={projects} />
+        <NavMenu recent={recent} />
         <span className="font-semibold tracking-tight">LoopCheck</span>
         <div className="ml-auto">
           <AccountMenu name={`${user.firstName} ${user.lastName}`} email={user.email} />

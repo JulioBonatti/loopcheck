@@ -10,24 +10,41 @@ async function createProject(page: Page, client: string, code: string) {
   await expect(page).toHaveURL(/\/loop-check$/);
 }
 
-test("the projects menu follows creations and deletions", async ({ page }) => {
+test("the menu shows the project changed last as Recent", async ({ page }) => {
   await signUp(page, newAccount());
-  await createProject(page, "Alpha", "NAV-1");
-
   const menu = page.getByRole("button", { name: "Open navigation" });
+  const recent = page.getByRole("menuitem", { name: /Alpha|Beta/ });
+
+  // Nothing changed yet: no Recent entry
   await menu.hover();
-  await expect(page.getByRole("menuitem", { name: /Alpha/ })).toBeVisible();
+  await expect(page.getByRole("menuitem", { name: "New project" })).toBeVisible();
+  await expect(recent).toHaveCount(0);
   await page.keyboard.press("Escape");
 
+  await createProject(page, "Alpha", "NAV-1");
+  await createProject(page, "Beta", "NAV-2");
+  await menu.hover();
+  await expect(recent).toHaveText(/Beta/);
+  await page.keyboard.press("Escape");
+
+  // Editing Alpha's settings makes it the recent one
+  await page.goto("/");
+  await page.getByRole("link", { name: /Alpha/ }).click();
   await page.getByRole("link", { name: "Project Settings" }).click();
+  await page.getByLabel("Description").fill("Changed");
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect(page.getByText("Saved.")).toBeVisible();
+  await menu.hover();
+  await expect(recent).toHaveText(/Alpha/);
+  await page.keyboard.press("Escape");
+
+  // Deleted projects never show up
   await page.getByRole("button", { name: "Delete project" }).click();
   await page.getByLabel("Type NAV-1 to confirm").fill("NAV-1");
   await page.getByRole("dialog").getByRole("button", { name: "Delete project" }).click();
-  await expect(page.getByText("No projects yet.")).toBeVisible();
-
+  await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
   await menu.hover();
-  await expect(page.getByRole("menuitem", { name: "New project" })).toBeVisible();
-  await expect(page.getByRole("menuitem", { name: /Alpha/ })).toHaveCount(0);
+  await expect(recent).toHaveText(/Beta/);
 });
 
 test("the account menu leads to My account and App Settings", async ({ page }) => {

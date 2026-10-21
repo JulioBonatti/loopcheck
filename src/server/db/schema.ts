@@ -456,5 +456,7 @@ export const auditLog = pgTable(
     index().on(t.projectId, t.at),
     index().on(t.entityType, t.entityId),
     index().on(t.batchId),
+    // The user's latest change: the "Recent" project in the menu
+    index().on(t.actorId, t.id),
   ],
 );
