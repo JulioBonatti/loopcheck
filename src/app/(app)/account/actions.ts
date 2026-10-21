@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { readSessionToken, requireActor, requireUser } from "@/server/auth/session";
 import { changePassword } from "@/server/services/account";
 import { type ActionError, type ActionResult, toActionResult } from "@/server/services/errors";
-import { leaveProject } from "@/server/services/members";
+import { leaveProject, respondToInvitation } from "@/server/services/members";
 import { refreshProjectLists } from "../refresh";
 
 export type ChangePasswordState = { error?: ActionError; done?: boolean };
@@ -32,6 +32,17 @@ export async function changePasswordAction(
 export async function leaveProjectAction(projectId: string): Promise<ActionResult<void>> {
   const actor = await requireActor();
   const result = await toActionResult(() => leaveProject(actor, projectId));
+  if (result.ok) refreshProjectLists();
+  return result;
+}
+
+/** REQ-MEM-02: accepting shows the project at once in every list. */
+export async function respondToInvitationAction(
+  invitationId: string,
+  accept: boolean,
+): Promise<ActionResult<void>> {
+  const actor = await requireActor();
+  const result = await toActionResult(() => respondToInvitation(actor, invitationId, { accept }));
   if (result.ok) refreshProjectLists();
   return result;
 }
