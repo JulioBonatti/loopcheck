@@ -206,7 +206,7 @@ function RemoveMemberButton({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
-        render={<Button variant="ghost" size="xs" className="ml-auto" disabled={disabled} />}
+        render={<Button variant="destructive" size="xs" className="ml-auto" disabled={disabled} />}
       >
         Remove
       </DialogTrigger>
