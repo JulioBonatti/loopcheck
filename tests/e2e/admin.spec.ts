@@ -43,9 +43,10 @@ test("an admin gives a temporary password and the user must replace it", async (
   await admin.page.getByRole("button", { name: "Open account menu" }).hover();
   await admin.page.getByRole("menuitem", { name: "Administration" }).click();
   await admin.page.getByLabel("Filter users").fill(user.account.email);
-  await card(admin.page, "Uri User")
-    .getByRole("button", { name: "Generate temporary password" })
-    .click();
+  const reset = card(admin.page, "Uri User").getByRole("button", { name: "Reset password" });
+  await reset.hover();
+  await expect(admin.page.getByText("This will generate a temporary password.")).toBeVisible();
+  await reset.click();
   await admin.page.getByRole("button", { name: "Generate password" }).click();
   const password =
     (await admin.page.getByLabel("Temporary password", { exact: true }).textContent()) ?? "";

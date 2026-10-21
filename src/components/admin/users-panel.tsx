@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { textMatcher } from "@/lib/search";
 import { type PickableUser, UserPicker } from "./user-picker";
 
@@ -138,11 +139,13 @@ function UserCard({
         {user.joined}
       </p>
       {!isSelf && (
-        <div className="flex flex-wrap gap-2">
-          <TemporaryPasswordButton user={user} />
+        <div className="flex items-center gap-2">
           {!user.isAdmin && (
             <RemoveUserButton user={user} candidates={candidates.filter((c) => c.id !== user.id)} />
           )}
+          <div className="ml-auto">
+            <TemporaryPasswordButton user={user} />
+          </div>
         </div>
       )}
     </div>
@@ -263,10 +266,13 @@ function TemporaryPasswordButton({ user }: { user: UserRow }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger render={<Button variant="outline" size="xs" />}>
-        <KeyRoundIcon />
-        Generate temporary password
-      </DialogTrigger>
+      <Tooltip>
+        <TooltipTrigger render={<DialogTrigger render={<Button variant="outline" size="xs" />} />}>
+          <KeyRoundIcon />
+          Reset password
+        </TooltipTrigger>
+        <TooltipContent>This will generate a temporary password.</TooltipContent>
+      </Tooltip>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Temporary password for {user.name}</DialogTitle>
