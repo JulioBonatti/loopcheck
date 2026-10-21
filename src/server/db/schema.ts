@@ -81,6 +81,12 @@ export const users = pgTable(
     isAdmin: boolean().notNull().default(false),
     /** Set by an admin temporary password (REQ-AUTH-07). */
     mustChangePassword: boolean().notNull().default(false),
+    /**
+     * Removed by an admin: cannot sign in, belongs to no project, but keeps its
+     * name in the history. IT can reactivate it (README).
+     */
+    deactivatedAt: timestamptz(),
+    deactivatedBy: uuid().references((): AnyPgColumn => users.id, { onDelete: "restrict" }),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },

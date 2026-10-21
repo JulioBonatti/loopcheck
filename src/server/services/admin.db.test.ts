@@ -4,6 +4,7 @@ import { actorOf, addMember, createTag, createUser } from "@/server/db/fixtures"
 import {
   auditLog,
   invitations,
+  users,
   issueTypes,
   issues,
   projectFields,
@@ -18,12 +19,13 @@ import {
   generateTemporaryPassword,
   generateTemporaryPasswordText,
   purgeProject,
+  removeUser,
   restoreProject,
   transferOwnership,
 } from "./admin";
-import { signIn, validateSession } from "./auth";
+import { signIn, signUp, validateSession } from "./auth";
 import { ForbiddenError, ValidationError } from "./errors";
-import { inviteMember } from "./members";
+import { inviteMember, respondToInvitation } from "./members";
 import { createProject, deleteProject } from "./projects";
 
 const db = getTestDb();
@@ -68,7 +70,7 @@ describe("admin actions are for admins only (SPEC §5.3)", () => {
       transferOwnership(user, { projectId: project.id, userId: other.id }, { db }),
     ).rejects.toThrow(ForbiddenError);
     await deleteProject(user, project.id, { confirmCode: "NA-1" }, { db });
-    await expect(restoreProject(user, project.id, { db })).rejects.toThrow(ForbiddenError);
+    await expect(restoreProject(user, project.id, {}, { db })).rejects.toThrow(ForbiddenError);
     await expect(purgeProject(user, project.id, { confirmCode: "NA-1" }, { db })).rejects.toThrow(
       ForbiddenError,
     );
@@ -180,7 +182,7 @@ describe("trash (REQ-PROJ-04)", () => {
       expect.objectContaining({ id: project.id, code: "TR-1", memberCount: 1 }),
     ]);
 
-    await restoreProject(boss, project.id, { db });
+    await restoreProject(boss, project.id, {}, { db });
 
     const [row] = await db.select().from(projects);
     expect(row.deletedAt).toBeNull();
@@ -192,7 +194,7 @@ describe("trash (REQ-PROJ-04)", () => {
     const { owner, project } = await trashed("TR-2");
     await createProject(owner, projectInput("tr-2"), { db });
 
-    const error = await rejection(restoreProject(boss, project.id, { db }));
+    const error = await rejection(restoreProject(boss, project.id, {}, { db }));
 
     expect((error as Error).message).toContain("Another active project uses the code TR-2");
   });
@@ -282,5 +284,169 @@ describe("listUsers", () => {
 
     const [ana] = await listUsers({ db });
     expect(ana.projectCount).toBe(1);
+  });
+});
+
+describe("removeUser (deactivation)", () => {
+  /** Ana owns an active project and a trashed one, joined Bob's, and has a pending invitation. */
+  async function scenario() {
+    const boss = await admin();
+    const anaUser = await createUser(db, { email: "ana@example.com", password: "secret" });
+    const ana = actorOf(anaUser);
+    const bob = actorOf(await createUser(db));
+    const heir = await createUser(db);
+    const active = await createProject(ana, projectInput("RM-1"), { db });
+    const trashed = await createProject(ana, projectInput("RM-2"), { db });
+    await deleteProject(ana, trashed.id, { confirmCode: "RM-2" }, { db });
+    const bobs = await createProject(bob, projectInput("RM-3"), { db });
+    await addMember(db, bobs.id, ana.userId, "member");
+    const other = await createProject(bob, projectInput("RM-4"), { db });
+    await inviteMember(bob, other.id, { email: "ana@example.com", role: "viewer" }, { db });
+    return { boss, ana, anaUser, bob, heir, active, trashed, bobs };
+  }
+
+  it("deactivates the account, hands active projects over and keeps the history", async () => {
+    const { boss, ana, anaUser, heir, active, trashed, bobs } = await scenario();
+    const { token } = await signIn({ email: "ana@example.com", password: "secret" }, { db });
+
+    await removeUser(
+      boss,
+      ana.userId,
+      { confirmEmail: "ANA@example.com", newOwners: { [active.id]: heir.id } },
+      { db },
+    );
+
+    // Cannot sign in, sessions ended, same message as an unknown account
+    expect(await validateSession(token, { db })).toBeNull();
+    await expect(signIn({ email: "ana@example.com", password: "secret" }, { db })).rejects.toThrow(
+      "Invalid email or password.",
+    );
+    // Left every project; the active one has the new owner
+    const memberships = await db.select().from(projectMembers);
+    expect(memberships.some((m) => m.userId === ana.userId)).toBe(false);
+    expect(memberships).toContainEqual(
+      expect.objectContaining({ projectId: active.id, userId: heir.id, role: "owner" }),
+    );
+    expect(memberships.some((m) => m.projectId === bobs.id && m.userId === ana.userId)).toBe(false);
+    // The trashed project stays in the trash, now without owner
+    const [trash] = await listTrashedProjects({ db });
+    expect(trash).toMatchObject({ id: trashed.id, hasOwner: false });
+    // Pending invitations to the e-mail are cancelled
+    const pending = await db.select().from(invitations).where(eq(invitations.status, "pending"));
+    expect(pending).toEqual([]);
+    // Nothing deleted: the account and its history remain
+    const [row] = await db.select().from(users).where(eq(users.id, ana.userId));
+    expect(row).toMatchObject({ deactivatedBy: boss.userId, firstName: anaUser.firstName });
+    const log = await db.select().from(auditLog).where(eq(auditLog.actorId, ana.userId));
+    expect(log.length).toBeGreaterThan(0);
+    const [entry] = await db
+      .select()
+      .from(auditLog)
+      .where(eq(auditLog.action, "admin.remove_user"));
+    expect(entry).toMatchObject({ actorId: boss.userId, entityId: ana.userId });
+  });
+
+  it("needs a new owner for every active project, and the current list", async () => {
+    const { boss, ana, heir, active } = await scenario();
+
+    await expect(
+      removeUser(boss, ana.userId, { confirmEmail: "ana@example.com", newOwners: {} }, { db }),
+    ).rejects.toThrow("This user's projects changed meanwhile.");
+    const wrongEmail = await rejection(
+      removeUser(
+        boss,
+        ana.userId,
+        { confirmEmail: "bob@example.com", newOwners: { [active.id]: heir.id } },
+        { db },
+      ),
+    );
+    expect((wrongEmail as ValidationError).fieldErrors.confirmEmail).toBeDefined();
+    const [row] = await db.select().from(users).where(eq(users.id, ana.userId));
+    expect(row.deactivatedAt).toBeNull();
+  });
+
+  it("refuses admins, oneself and removed accounts as new owners", async () => {
+    const { boss, ana, active } = await scenario();
+    const otherAdmin = await admin();
+    const removed = await createUser(db, { deactivatedAt: new Date() });
+
+    await expect(
+      removeUser(boss, otherAdmin.userId, { confirmEmail: "x", newOwners: {} }, { db }),
+    ).rejects.toThrow("Administrators are managed by IT.");
+    await expect(
+      removeUser(boss, boss.userId, { confirmEmail: "x", newOwners: {} }, { db }),
+    ).rejects.toThrow("You cannot remove your own account.");
+    await expect(
+      removeUser(
+        boss,
+        ana.userId,
+        { confirmEmail: "ana@example.com", newOwners: { [active.id]: removed.id } },
+        { db },
+      ),
+    ).rejects.toThrow("This account was removed.");
+  });
+
+  it("keeps the e-mail taken and the account out of invitations", async () => {
+    const { boss, ana, bob, heir, active, bobs } = await scenario();
+    await removeUser(
+      boss,
+      ana.userId,
+      { confirmEmail: "ana@example.com", newOwners: { [active.id]: heir.id } },
+      { db },
+    );
+
+    await expect(
+      signUp(
+        {
+          firstName: "Ana",
+          lastName: "Again",
+          email: "ana@example.com",
+          password: "x",
+          confirmPassword: "x",
+        },
+        { db },
+      ),
+    ).rejects.toThrow(ValidationError);
+    const invite = await rejection(
+      inviteMember(bob, bobs.id, { email: "ana@example.com", role: "member" }, { db }),
+    );
+    expect((invite as ValidationError).fieldErrors.email).toEqual([
+      "This account was removed by an administrator.",
+    ]);
+  });
+
+  it("restoring an ownerless project requires a new owner", async () => {
+    const { boss, ana, heir, active, trashed } = await scenario();
+    await removeUser(
+      boss,
+      ana.userId,
+      { confirmEmail: "ana@example.com", newOwners: { [active.id]: heir.id } },
+      { db },
+    );
+
+    const missing = await rejection(restoreProject(boss, trashed.id, {}, { db }));
+    expect((missing as ValidationError).fieldErrors.newOwnerId).toBeDefined();
+
+    await restoreProject(boss, trashed.id, { newOwnerId: heir.id }, { db });
+    const owners = await db
+      .select()
+      .from(projectMembers)
+      .where(eq(projectMembers.projectId, trashed.id));
+    expect(owners).toEqual([expect.objectContaining({ userId: heir.id, role: "owner" })]);
+  });
+
+  it("a removed user's pending answer is impossible: invitations were cancelled", async () => {
+    const { boss, ana, heir, active } = await scenario();
+    const [invitation] = await db.select().from(invitations);
+    await removeUser(
+      boss,
+      ana.userId,
+      { confirmEmail: "ana@example.com", newOwners: { [active.id]: heir.id } },
+      { db },
+    );
+
+    await expect(respondToInvitation(ana, invitation.id, { accept: true }, { db })).rejects.toThrow(
+      "This invitation is no longer pending.",
+    );
   });
 });

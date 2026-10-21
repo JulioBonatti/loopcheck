@@ -53,6 +53,7 @@ Next.js (App Router) · TypeScript strict · PostgreSQL · Drizzle ORM · Zod ·
 - `npm run db:migrate`: aplica as migrações em `DATABASE_URL` (`.env.local`, copiado de `.env.example`).
 - `npm run dev` · `npm run lint` · `npm run typecheck`
 - `npm run admin:create -- --email <e-mail> --first <nome> --last <sobrenome> --password <senha>`: cria um admin (ou, só com `--email`, promove uma conta existente) no banco de `DATABASE_URL`. Admin não é gerenciado pelo app. Rebaixar: `UPDATE users SET is_admin = false WHERE email = …`.
+- `npm run user:reactivate -- --email <e-mail>`: reativa uma conta removida pelo admin (sem devolver projetos). Procedimentos de TI completos no `README.md`.
 - `npm test`: Vitest, projetos `unit` e `db`. O `db` recria o schema de `loopcheck_test` a partir das migrações (precisa de `db:up`). Só um: `npx vitest run --project unit`.
 - `npm run test:e2e`: Playwright. Sobe o próprio `next dev` na porta 3100, com o banco `loopcheck_e2e` (recriado a cada execução) e a pasta de build `.next-e2e` (roda junto com o `npm run dev`). Na primeira vez no WSL/Linux: `sudo npx playwright install-deps chromium`.
 

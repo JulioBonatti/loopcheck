@@ -35,10 +35,12 @@ import { type Actor, requireAdmin } from "./permissions";
 
 const id = z.uuid();
 
+/** Locks an active (not removed) account. */
 async function lockUser(tx: Tx, userId: string) {
   if (!id.safeParse(userId).success) throw new NotFoundError("User");
   const [user] = await tx.select().from(users).where(eq(users.id, userId)).for("update");
   if (!user) throw new NotFoundError("User");
+  if (user.deactivatedAt) throw new ValidationError("This account was removed.");
   return user;
 }
 
@@ -85,6 +87,103 @@ export function generateTemporaryPassword(actor: Actor, userId: string, { db }: 
         after: { passwordHash, mustChangePassword: true },
       });
       return { password };
+    },
+  });
+}
+
+/**
+ * Removes (deactivates) an account. Nothing is deleted: the person's name
+ * stays in the history. Their active projects get the new owners chosen by
+ * the admin (`newOwners`: project id → user id); owned projects already in
+ * the trash stay there without an owner, and need one when restored. They
+ * leave every project, their pending invitations are cancelled and their
+ * sessions end. IT can reactivate the account (README); memberships do not
+ * come back. Admin accounts are managed by IT, not here.
+ */
+export function removeUser(actor: Actor, userId: string, input: unknown, { db }: { db?: Db } = {}) {
+  return mutate({
+    db,
+    actor,
+    authorize: () => requireAdmin(actor),
+    schema: z.object({
+      confirmEmail: z.string().trim().toLowerCase(),
+      newOwners: z.record(z.string(), z.string()),
+    }),
+    input,
+    run: async ({ tx, audit }, { confirmEmail, newOwners }) => {
+      if (userId === actor.userId) throw new ValidationError("You cannot remove your own account.");
+      const user = await lockUser(tx, userId);
+      if (user.isAdmin) {
+        throw new ValidationError(
+          "Administrators are managed by IT. Remove the admin role in the database first.",
+        );
+      }
+      if (confirmEmail !== user.email) {
+        throw new ValidationError(undefined, {
+          confirmEmail: ["Type the user's email exactly to confirm."],
+        });
+      }
+
+      const owned = await tx
+        .select({ projectId: projects.id, inTrash: isNotNull(projects.deletedAt).mapWith(Boolean) })
+        .from(projectMembers)
+        .innerJoin(projects, eq(projects.id, projectMembers.projectId))
+        .where(and(eq(projectMembers.userId, userId), eq(projectMembers.role, "owner")))
+        .for("update");
+      const active = owned.filter((p) => !p.inTrash).map((p) => p.projectId);
+      // The dialog must match what the user owns right now.
+      const chosen = Object.keys(newOwners);
+      if (chosen.length !== active.length || active.some((p) => !newOwners[p])) {
+        throw new ValidationError(
+          "This user's projects changed meanwhile. Reload the page and try again.",
+        );
+      }
+
+      // Leave every project first: new owners can then take over.
+      await tx.delete(projectMembers).where(eq(projectMembers.userId, userId));
+      for (const projectId of active) {
+        const newOwnerId = newOwners[projectId];
+        if (newOwnerId === userId) throw new ValidationError("Choose someone else as new owner.");
+        await lockUser(tx, newOwnerId);
+        await tx
+          .insert(projectMembers)
+          .values({ projectId, userId: newOwnerId, role: "owner" })
+          .onConflictDoUpdate({
+            target: [projectMembers.projectId, projectMembers.userId],
+            set: { role: "owner" },
+          });
+        audit({
+          action: "admin.transfer_ownership",
+          entityType: "project",
+          entityId: projectId,
+          projectId,
+          before: { ownerId: userId },
+          after: { ownerId: newOwnerId },
+        });
+      }
+
+      await tx
+        .update(invitations)
+        .set({ status: "cancelled", respondedAt: new Date() })
+        .where(and(eq(invitations.email, user.email), eq(invitations.status, "pending")));
+      await tx.delete(sessions).where(eq(sessions.userId, userId));
+      const deactivatedAt = new Date();
+      await tx
+        .update(users)
+        .set({ deactivatedAt, deactivatedBy: actor.userId })
+        .where(eq(users.id, userId));
+
+      audit({
+        action: "admin.remove_user",
+        entityType: "user",
+        entityId: userId,
+        before: { deactivatedAt: null },
+        after: {
+          deactivatedAt,
+          newOwners,
+          ownedProjectsInTrash: owned.filter((p) => p.inTrash).map((p) => p.projectId),
+        },
+      });
     },
   });
 }
@@ -161,16 +260,45 @@ async function lockTrashedProject(tx: Tx, projectId: string) {
   return project;
 }
 
-/** Back to all its members, unless an active project took its code meanwhile. */
-export function restoreProject(actor: Actor, projectId: string, { db }: { db?: Db } = {}) {
+/**
+ * Back to all its members, unless an active project took its code meanwhile.
+ * A project left without owner (its owner's account was removed) needs a new
+ * owner to come back.
+ */
+export function restoreProject(
+  actor: Actor,
+  projectId: string,
+  input: unknown = {},
+  { db }: { db?: Db } = {},
+) {
   return mutate({
     db,
     actor,
     authorize: () => requireAdmin(actor),
-    schema: z.object({}),
-    input: {},
-    run: async ({ tx, audit }) => {
+    schema: z.object({ newOwnerId: z.string().optional() }),
+    input,
+    run: async ({ tx, audit }, { newOwnerId }) => {
       const project = await lockTrashedProject(tx, projectId);
+      const [owner] = await tx
+        .select({ userId: projectMembers.userId })
+        .from(projectMembers)
+        .where(and(eq(projectMembers.projectId, projectId), eq(projectMembers.role, "owner")));
+      if (!owner) {
+        if (!newOwnerId) {
+          throw new ValidationError(undefined, {
+            newOwnerId: ["This project has no owner. Choose one to restore it."],
+          });
+        }
+        await lockUser(tx, newOwnerId);
+        await tx
+          .insert(projectMembers)
+          .values({ projectId, userId: newOwnerId, role: "owner" })
+          .onConflictDoUpdate({
+            target: [projectMembers.projectId, projectMembers.userId],
+            set: { role: "owner" },
+          });
+      }
+
       try {
         await tx
           .update(projects)
@@ -190,7 +318,7 @@ export function restoreProject(actor: Actor, projectId: string, { db }: { db?: D
         entityId: projectId,
         projectId,
         before: { deletedAt: project.deletedAt },
-        after: { deletedAt: null },
+        after: owner ? { deletedAt: null } : { deletedAt: null, ownerId: newOwnerId },
       });
     },
   });

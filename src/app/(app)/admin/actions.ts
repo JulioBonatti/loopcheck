@@ -5,6 +5,7 @@ import { requireActor } from "@/server/auth/session";
 import {
   generateTemporaryPassword,
   purgeProject,
+  removeUser,
   restoreProject,
   transferOwnership,
 } from "@/server/services/admin";
@@ -37,8 +38,21 @@ export async function transferOwnershipAction(projectId: string, userId: string)
   });
 }
 
-export async function restoreProjectAction(projectId: string) {
-  return adminChange((actor) => restoreProject(actor, projectId), { projectLists: true });
+export async function restoreProjectAction(projectId: string, newOwnerId?: string) {
+  return adminChange((actor) => restoreProject(actor, projectId, { newOwnerId }), {
+    projectLists: true,
+  });
+}
+
+/** Deactivates an account; `newOwners` maps each of its active projects to a new owner. */
+export async function removeUserAction(
+  userId: string,
+  confirmEmail: string,
+  newOwners: Record<string, string>,
+) {
+  return adminChange((actor) => removeUser(actor, userId, { confirmEmail, newOwners }), {
+    projectLists: true,
+  });
 }
 
 export type PurgeState = { error?: ActionError; purged?: boolean };

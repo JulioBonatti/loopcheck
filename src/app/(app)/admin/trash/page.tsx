@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { TrashPanel } from "@/components/admin/trash-panel";
 import { formatDateTime } from "@/lib/dates";
-import { listTrashedProjects } from "@/server/queries/admin";
+import { listTrashedProjects, listUsers } from "@/server/queries/admin";
 
 export const metadata: Metadata = { title: "Trash · Administration · LoopCheck" };
 
 /** Administration → Trash (REQ-PROJ-04). The layout checks the admin role. */
 export default async function AdminTrashPage() {
-  const projects = await listTrashedProjects();
+  const [projects, users] = await Promise.all([listTrashedProjects(), listUsers()]);
   return (
     <TrashPanel
       projects={projects.map((p) => ({
@@ -17,7 +17,11 @@ export default async function AdminTrashPage() {
         deletedBy: p.deletedBy,
         deleted: formatDateTime(p.deletedAt, p),
         memberCount: p.memberCount,
+        hasOwner: p.hasOwner,
       }))}
+      owners={users
+        .filter((u) => !u.deactivatedAt)
+        .map((u) => ({ id: u.id, name: `${u.firstName} ${u.lastName}`, email: u.email }))}
     />
   );
 }

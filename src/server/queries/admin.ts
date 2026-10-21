@@ -15,27 +15,55 @@ export type AdminUser = {
   isAdmin: boolean;
   mustChangePassword: boolean;
   createdAt: Date;
+  /** Set when an admin removed the account. */
+  deactivatedAt: Date | null;
   /** Projects outside the trash the user belongs to. */
   projectCount: number;
+  /** Projects the user owns, in the trash or not (for removal). */
+  ownedProjects: { id: string; clientName: string; code: string; inTrash: boolean }[];
 };
 
 export async function listUsers({ db = defaultDb }: { db?: Db } = {}): Promise<AdminUser[]> {
-  return db
-    .select({
-      id: users.id,
-      firstName: users.firstName,
-      lastName: users.lastName,
-      email: users.email,
-      isAdmin: users.isAdmin,
-      mustChangePassword: users.mustChangePassword,
-      createdAt: users.createdAt,
-      projectCount: sql<number>`count(${projects.id})::int`,
-    })
-    .from(users)
-    .leftJoin(projectMembers, eq(projectMembers.userId, users.id))
-    .leftJoin(projects, and(eq(projects.id, projectMembers.projectId), isNull(projects.deletedAt)))
-    .groupBy(users.id)
-    .orderBy(asc(users.firstName), asc(users.lastName));
+  const [rows, owned] = await Promise.all([
+    db
+      .select({
+        id: users.id,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        email: users.email,
+        isAdmin: users.isAdmin,
+        mustChangePassword: users.mustChangePassword,
+        createdAt: users.createdAt,
+        deactivatedAt: users.deactivatedAt,
+        projectCount: sql<number>`count(${projects.id})::int`,
+      })
+      .from(users)
+      .leftJoin(projectMembers, eq(projectMembers.userId, users.id))
+      .leftJoin(
+        projects,
+        and(eq(projects.id, projectMembers.projectId), isNull(projects.deletedAt)),
+      )
+      .groupBy(users.id)
+      .orderBy(asc(users.firstName), asc(users.lastName)),
+    db
+      .select({
+        userId: projectMembers.userId,
+        id: projects.id,
+        clientName: projects.clientName,
+        code: projects.code,
+        inTrash: isNotNull(projects.deletedAt).mapWith(Boolean),
+      })
+      .from(projectMembers)
+      .innerJoin(projects, eq(projects.id, projectMembers.projectId))
+      .where(eq(projectMembers.role, "owner"))
+      .orderBy(asc(projects.clientName), asc(projects.code)),
+  ]);
+  return rows.map((u) => ({
+    ...u,
+    ownedProjects: owned
+      .filter((p) => p.userId === u.id)
+      .map((p) => ({ id: p.id, clientName: p.clientName, code: p.code, inTrash: p.inTrash })),
+  }));
 }
 
 const owner = aliasedTable(users, "owner");
@@ -98,6 +126,8 @@ export type TrashedProject = ProjectDates & {
   deletedAt: Date;
   deletedBy: string | null;
   memberCount: number;
+  /** False when the owner's account was removed: restoring needs a new owner. */
+  hasOwner: boolean;
 };
 
 /** Projects in the trash, most recently deleted first (REQ-PROJ-04). */
@@ -115,6 +145,10 @@ export async function listTrashedProjects({ db = defaultDb }: { db?: Db } = {}):
       deleterFirst: deleter.firstName,
       deleterLast: deleter.lastName,
       memberCount,
+      hasOwner: sql<boolean>`exists (
+        select 1 from ${projectMembers}
+        where ${projectMembers.projectId} = ${projects.id} and ${projectMembers.role} = 'owner'
+      )`,
     })
     .from(projects)
     .leftJoin(deleter, eq(deleter.id, projects.deletedBy))

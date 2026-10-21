@@ -3,7 +3,7 @@
  * roles and removes members; the invited user accepts or declines. No e-mail
  * is sent (§17): invitations show up in My account, matched by e-mail.
  */
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import { z } from "zod";
 import type { Db, Tx } from "@/server/db";
 import { isUniqueViolation } from "@/server/db/errors";
@@ -71,6 +71,15 @@ export function inviteMember(
         .where(and(eq(projectMembers.projectId, projectId), eq(users.email, data.email)));
       if (member) {
         throw new ValidationError(undefined, { email: ["This person is already a member."] });
+      }
+      const [removed] = await tx
+        .select({ id: users.id })
+        .from(users)
+        .where(and(eq(users.email, data.email), isNotNull(users.deactivatedAt)));
+      if (removed) {
+        throw new ValidationError(undefined, {
+          email: ["This account was removed by an administrator."],
+        });
       }
 
       let invitation;

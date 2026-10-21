@@ -1,10 +1,11 @@
 "use client";
 
-import { CheckIcon, CopyIcon, KeyRoundIcon } from "lucide-react";
+import { CheckIcon, CopyIcon, KeyRoundIcon, UserMinusIcon } from "lucide-react";
 import { useDeferredValue, useState } from "react";
-import { generateTemporaryPasswordAction } from "@/app/(app)/admin/actions";
+import { generateTemporaryPasswordAction, removeUserAction } from "@/app/(app)/admin/actions";
 import { SearchInput } from "@/components/app/search-input";
 import { useAction } from "@/components/app/use-action";
+import { FormField } from "@/components/auth/form-field";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +17,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { textMatcher } from "@/lib/search";
+import { type PickableUser, UserPicker } from "./user-picker";
+
+export type OwnedProject = { id: string; clientName: string; code: string; inTrash: boolean };
 
 export type UserRow = {
   id: string;
@@ -25,19 +31,28 @@ export type UserRow = {
   isAdmin: boolean;
   mustChangePassword: boolean;
   projectCount: number;
+  ownedProjects: OwnedProject[];
   /** Already formatted on the server. */
   joined: string;
+  /** When an admin removed the account (formatted), or null. */
+  removed: string | null;
 };
 
-/** Administration → Users (REQ-ACC-04). */
+/** Administration → Users (REQ-ACC-04). Removed accounts are hidden unless asked for. */
 export function UsersPanel({ users, currentUserId }: { users: UserRow[]; currentUserId: string }) {
   const [query, setQuery] = useState("");
+  const [showRemoved, setShowRemoved] = useState(false);
   const matches = textMatcher(useDeferredValue(query));
-  const shown = users.filter((u) => matches(`${u.name} ${u.email}`));
+  const shown = users.filter((u) => (showRemoved || !u.removed) && matches(`${u.name} ${u.email}`));
+  const activeCount = users.filter((u) => !u.removed).length;
+  // Possible new owners: active accounts only.
+  const candidates: PickableUser[] = users
+    .filter((u) => !u.removed)
+    .map((u) => ({ id: u.id, name: u.name, email: u.email }));
 
   return (
     <div className="grid gap-3">
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <SearchInput
           label="Filter users"
           placeholder="Filter by name or email…"
@@ -46,15 +61,21 @@ export function UsersPanel({ users, currentUserId }: { users: UserRow[]; current
           className="w-72"
         />
         <span className="text-muted-foreground text-sm">
-          {users.length} {users.length === 1 ? "user" : "users"}
+          {activeCount} {activeCount === 1 ? "user" : "users"}
         </span>
+        <div className="ml-auto flex items-center gap-2">
+          <Switch id="show-removed" checked={showRemoved} onCheckedChange={setShowRemoved} />
+          <Label htmlFor="show-removed" className="font-normal">
+            Show removed
+          </Label>
+        </div>
       </div>
       {shown.length === 0 ? (
         <p className="text-muted-foreground text-sm">Nobody matches “{query}”.</p>
       ) : (
         <div className="grid grid-cols-[repeat(auto-fill,minmax(19rem,1fr))] gap-2">
           {shown.map((u) => (
-            <UserCard key={u.id} user={u} isSelf={u.id === currentUserId} />
+            <UserCard key={u.id} user={u} isSelf={u.id === currentUserId} candidates={candidates} />
           ))}
         </div>
       )}
@@ -63,7 +84,36 @@ export function UsersPanel({ users, currentUserId }: { users: UserRow[]; current
 }
 
 /** Admin status is not edited here: IT manages it in the database. */
-function UserCard({ user, isSelf }: { user: UserRow; isSelf: boolean }) {
+function UserCard({
+  user,
+  isSelf,
+  candidates,
+}: {
+  user: UserRow;
+  isSelf: boolean;
+  candidates: PickableUser[];
+}) {
+  if (user.removed) {
+    return (
+      <div
+        role="group"
+        aria-label={user.name}
+        className="ring-foreground/10 grid gap-2 rounded-lg border border-dashed p-3 opacity-70"
+      >
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium">{user.name}</p>
+            <p className="text-muted-foreground truncate text-xs">{user.email}</p>
+          </div>
+          <Badge variant="outline">Removed</Badge>
+        </div>
+        <p className="text-muted-foreground text-xs">
+          Joined {user.joined} · Removed {user.removed}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div
       role="group"
@@ -90,9 +140,100 @@ function UserCard({ user, isSelf }: { user: UserRow; isSelf: boolean }) {
       {!isSelf && (
         <div className="flex flex-wrap gap-2">
           <TemporaryPasswordButton user={user} />
+          {!user.isAdmin && (
+            <RemoveUserButton user={user} candidates={candidates.filter((c) => c.id !== user.id)} />
+          )}
         </div>
       )}
     </div>
+  );
+}
+
+/**
+ * Removes (deactivates) the account. Every active project it owns needs a new
+ * owner; projects already in the trash stay there, without owner.
+ */
+function RemoveUserButton({ user, candidates }: { user: UserRow; candidates: PickableUser[] }) {
+  const [open, setOpen] = useState(false);
+  const [newOwners, setNewOwners] = useState<Record<string, string>>({});
+  const [typed, setTyped] = useState("");
+  const { pending, run } = useAction();
+  const active = user.ownedProjects.filter((p) => !p.inTrash);
+  const trashed = user.ownedProjects.filter((p) => p.inTrash);
+  const ready = active.every((p) => newOwners[p.id]) && typed.trim().toLowerCase() === user.email;
+
+  function onOpenChange(next: boolean) {
+    setOpen(next);
+    setNewOwners({});
+    setTyped("");
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger render={<Button variant="destructive" size="xs" />}>
+        <UserMinusIcon />
+        Remove user
+      </DialogTrigger>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
+        <DialogHeader>
+          <DialogTitle>Remove {user.name}?</DialogTitle>
+          <DialogDescription>
+            They can no longer sign in and leave all their projects. Their name stays in the
+            history. IT can reactivate the account later, but projects do not come back.
+          </DialogDescription>
+        </DialogHeader>
+
+        {active.length > 0 && (
+          <div className="grid gap-3">
+            <p className="text-sm font-medium">
+              Choose a new owner for {active.length === 1 ? "this project" : "these projects"}
+            </p>
+            {active.map((p) => (
+              <div key={p.id} className="grid gap-1.5">
+                <p className="text-sm">
+                  {p.clientName} <span className="text-muted-foreground font-mono">{p.code}</span>
+                </p>
+                <UserPicker
+                  label={`New owner of ${p.code}`}
+                  users={candidates}
+                  value={newOwners[p.id] ?? null}
+                  onChange={(id) => setNewOwners((prev) => ({ ...prev, [p.id]: id }))}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {trashed.length > 0 && (
+          <p className="text-muted-foreground text-sm">
+            Owned projects in the trash stay there without owner (
+            {trashed.map((p) => p.code).join(", ")}). Restoring one asks for a new owner.
+          </p>
+        )}
+
+        <FormField
+          name="confirmEmail"
+          label={`Type ${user.email} to confirm`}
+          autoComplete="off"
+          value={typed}
+          onChange={(e) => setTyped(e.target.value)}
+        />
+        <DialogFooter showCloseButton>
+          <Button
+            variant="destructive"
+            disabled={!ready || pending}
+            onClick={() =>
+              run(
+                () => removeUserAction(user.id, typed, newOwners),
+                () => onOpenChange(false),
+              )
+            }
+          >
+            {pending ? "Removing…" : "Remove user"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 

@@ -4,6 +4,8 @@ import { formatDate } from "@/lib/dates";
 import { requireUser } from "@/server/auth/session";
 import { listUsers } from "@/server/queries/admin";
 
+const UTC_DATES = { timezone: "UTC", dateFormat: "YYYY/MM/DD" } as const;
+
 export const metadata: Metadata = { title: "Users · Administration · LoopCheck" };
 
 /** Administration → Users. Dates without a project: YYYY/MM/DD in UTC. */
@@ -20,7 +22,9 @@ export default async function AdminUsersPage() {
         isAdmin: u.isAdmin,
         mustChangePassword: u.mustChangePassword,
         projectCount: u.projectCount,
-        joined: formatDate(u.createdAt, { timezone: "UTC", dateFormat: "YYYY/MM/DD" }),
+        ownedProjects: u.ownedProjects,
+        joined: formatDate(u.createdAt, UTC_DATES),
+        removed: u.deactivatedAt && formatDate(u.deactivatedAt, UTC_DATES),
       }))}
     />
   );

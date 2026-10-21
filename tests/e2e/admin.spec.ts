@@ -123,3 +123,35 @@ test("non-admins do not see Administration", async ({ browser }) => {
   await user.page.goto("/admin");
   await expect(user.page.getByText("This page could not be found.")).toBeVisible();
 });
+
+test("an admin removes a user, handing their project to someone else", async ({ browser }) => {
+  const admin = await newUser(browser, "Ada", "Admin", { admin: true });
+  const leaver = await newUser(browser, "Leo", "Leaver");
+  const heir = await newUser(browser, "Hugo", "Heir");
+  const code = await createProject(leaver.page, "Leaver Co");
+
+  await admin.page.goto("/admin");
+  await admin.page.getByLabel("Filter users").fill(leaver.account.email);
+  await card(admin.page, "Leo Leaver").getByRole("button", { name: "Remove user" }).click();
+  const dialog = admin.page.getByRole("dialog");
+  const remove = dialog.getByRole("button", { name: "Remove user" });
+
+  await dialog.getByLabel(`Filter new owner of ${code}`).fill(heir.account.email);
+  await dialog.getByRole("option", { name: /Hugo Heir/ }).click();
+  await expect(remove).toBeDisabled(); // still needs the e-mail
+  await dialog.getByLabel(`Type ${leaver.account.email} to confirm`).fill(leaver.account.email);
+  await remove.click();
+  await expect(card(admin.page, "Leo Leaver")).toHaveCount(0);
+
+  // Hidden by default, shown with the toggle
+  await admin.page.getByRole("switch", { name: "Show removed" }).click();
+  await expect(card(admin.page, "Leo Leaver")).toContainText("Removed");
+
+  // The removed user is out; the heir owns the project
+  await leaver.page.goto("/");
+  await expect(leaver.page).toHaveURL(/\/sign-in$/);
+  await signIn(leaver.page, leaver.account.email, leaver.account.password);
+  await expect(leaver.page.getByText("Invalid email or password.")).toBeVisible();
+  await heir.page.goto("/");
+  await expect(heir.page.getByRole("link", { name: /Leaver Co/ })).toContainText("Owner");
+});

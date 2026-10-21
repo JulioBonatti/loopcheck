@@ -20,11 +20,13 @@ export default async function AdminProjectsPage() {
         memberCount: p.memberCount,
         created: formatDate(p.createdAt, p),
       }))}
-      users={users.map((u) => ({
+      users={users
+        .filter((u) => !u.deactivatedAt)
+        .map((u) => ({
         id: u.id,
         name: `${u.firstName} ${u.lastName}`,
-        email: u.email,
-      }))}
+          email: u.email,
+        }))}
     />
   );
 }

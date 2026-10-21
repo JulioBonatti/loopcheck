@@ -5,7 +5,7 @@
  * `mutate`; they still validate with Zod and write the audit entry in the
  * same transaction as the change (ARQ-01).
  */
-import { and, desc, eq, gt, lt } from "drizzle-orm";
+import { and, desc, eq, gt, isNull, lt } from "drizzle-orm";
 import { z } from "zod";
 import { SESSION_MAX_AGE_SECONDS } from "@/lib/session-cookie";
 import { type Db, db as defaultDb, type Tx } from "@/server/db";
@@ -178,10 +178,11 @@ export async function signIn(
     throw new TooManyAttemptsError(Math.max(1, Math.ceil((unblockAt - now.getTime()) / 60_000)));
   }
 
+  // Removed accounts look like unknown ones (same message, same timing).
   const [found] = await db
     .select({ user: sessionUserColumns, passwordHash: users.passwordHash })
     .from(users)
-    .where(eq(users.email, data.email));
+    .where(and(eq(users.email, data.email), isNull(users.deactivatedAt)));
   const valid = found
     ? await verifyPassword(found.passwordHash, data.password)
     : await verifyAgainstDummy(data.password);
@@ -236,7 +237,13 @@ export async function validateSession(
     .select({ user: sessionUserColumns, sessionId: sessions.id, expiresAt: sessions.expiresAt })
     .from(sessions)
     .innerJoin(users, eq(users.id, sessions.userId))
-    .where(and(eq(sessions.tokenHash, hashSessionToken(token)), gt(sessions.expiresAt, now)));
+    .where(
+      and(
+        eq(sessions.tokenHash, hashSessionToken(token)),
+        gt(sessions.expiresAt, now),
+        isNull(users.deactivatedAt),
+      ),
+    );
   if (!row) return null;
 
   const renewedExpiry = new Date(now.getTime() + SESSION_MS);
