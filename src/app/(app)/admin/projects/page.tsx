@@ -21,8 +21,9 @@ export default async function AdminProjectsPage() {
         created: formatDate(p.createdAt, p),
       }))}
       users={users.map((u) => ({
-        value: u.id,
-        label: `${u.firstName} ${u.lastName} (${u.email})`,
+        id: u.id,
+        name: `${u.firstName} ${u.lastName}`,
+        email: u.email,
       }))}
     />
   );

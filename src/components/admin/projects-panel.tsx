@@ -14,15 +14,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { textMatcher } from "@/lib/search";
+import { type PickableUser, UserPicker } from "./user-picker";
 
 export type AdminProjectRow = {
   id: string;
@@ -36,8 +29,6 @@ export type AdminProjectRow = {
   created: string;
 };
 
-export type UserOption = { value: string; label: string };
-
 /**
  * Administration → Projects: every project outside the trash, for ownership
  * transfer (REQ-PROJ-05). It does not open the projects (REQ-PERM-03).
@@ -47,7 +38,7 @@ export function ProjectsPanel({
   users,
 }: {
   projects: AdminProjectRow[];
-  users: UserOption[];
+  users: PickableUser[];
 }) {
   const [query, setQuery] = useState("");
   const matches = textMatcher(useDeferredValue(query));
@@ -105,12 +96,12 @@ function TransferOwnershipButton({
   users,
 }: {
   project: AdminProjectRow;
-  users: UserOption[];
+  users: PickableUser[];
 }) {
   const [open, setOpen] = useState(false);
   const [newOwner, setNewOwner] = useState<string | null>(null);
   const { pending, run } = useAction();
-  const candidates = users.filter((u) => u.value !== project.ownerId);
+  const candidates = users.filter((u) => u.id !== project.ownerId);
 
   return (
     <Dialog
@@ -133,21 +124,7 @@ function TransferOwnershipButton({
             {project.ownerName ? ` (${project.ownerName})` : ""} becomes a member.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-1.5">
-          <Label htmlFor={`new-owner-${project.id}`}>New owner</Label>
-          <Select value={newOwner} onValueChange={setNewOwner} items={candidates}>
-            <SelectTrigger id={`new-owner-${project.id}`} className="w-full">
-              <SelectValue placeholder="Choose a user" />
-            </SelectTrigger>
-            <SelectContent>
-              {candidates.map((u) => (
-                <SelectItem key={u.value} value={u.value}>
-                  {u.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        <UserPicker label="New owner" users={candidates} value={newOwner} onChange={setNewOwner} />
         <DialogFooter showCloseButton>
           <Button
             disabled={!newOwner || pending}

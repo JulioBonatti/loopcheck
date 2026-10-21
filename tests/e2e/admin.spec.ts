@@ -101,8 +101,9 @@ test("an admin transfers a project's ownership", async ({ browser }) => {
   await card(admin.page, `Handover ${code}`)
     .getByRole("button", { name: "Transfer ownership" })
     .click();
-  await admin.page.getByLabel("New owner").click();
-  await admin.page.getByRole("option", { name: new RegExp(heir.account.email) }).click();
+  await admin.page.getByLabel("Filter new owner").fill("hana");
+  await expect(admin.page.getByRole("option")).toHaveCount(1);
+  await admin.page.getByRole("option", { name: /Hana Heir/ }).click();
   await admin.page.getByRole("dialog").getByRole("button", { name: "Transfer ownership" }).click();
   await expect(card(admin.page, `Handover ${code}`)).toContainText("Hana Heir");
 
