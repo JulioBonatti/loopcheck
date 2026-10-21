@@ -49,5 +49,5 @@ test("a forced password change blocks the app until done", async ({ page }) => {
 
   await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
   await page.goto("/change-password");
-  await expect(page).toHaveURL(/\/account$/);
+  await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
 });

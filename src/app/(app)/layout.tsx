@@ -33,6 +33,7 @@ async function SignedIn({ children }: { children: React.ReactNode }) {
           <AccountMenu
             name={`${user.firstName} ${user.lastName}`}
             email={user.email}
+            isAdmin={user.isAdmin}
             invitationCount={invitationCount}
           />
         </div>

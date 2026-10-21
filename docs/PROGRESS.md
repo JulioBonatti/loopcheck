@@ -11,7 +11,7 @@
 | 5 | Casca do app + My account (REQ-UI-01/02/04, REQ-ACC-01/03, REQ-AUTH-06/07) | ✅ (AUTH-07: lado do usuário; o admin gera a senha no passo 8) |
 | 6 | Projetos (REQ-PROJ-01/02/03, REQ-UI-03/05, REQ-SET-01/08) | ✅ |
 | 7 | Membros e convites (REQ-MEM-01…05, REQ-SET-07, REQ-ACC-02, REQ-PERM-01/02) | ✅ |
-| 8 | Administração (REQ-ACC-04, REQ-AUTH-07, REQ-PERM-03/04, REQ-PROJ-04/05) | ⏳ |
+| 8 | Administração (REQ-ACC-04, REQ-AUTH-07, REQ-PERM-03/04, REQ-PROJ-04/05) | ✅ (lixeira de IO lists no passo 13) |
 | 9 | Settings restante (REQ-SET-03…06) | ⏳ |
 | 10 | Biblioteca CSV pura (REQ-IMP-02…14) | ⏳ |
 | 11 | Assistente de importação, etapas 1–2 (REQ-IMP-01…10) | ⏳ |

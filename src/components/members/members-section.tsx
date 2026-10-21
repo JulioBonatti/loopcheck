@@ -1,14 +1,14 @@
 "use client";
 
 import { MailIcon } from "lucide-react";
-import { useDeferredValue, useState, useTransition } from "react";
-import { toast } from "sonner";
+import { useDeferredValue, useState } from "react";
 import {
   cancelInvitationAction,
   changeMemberRoleAction,
   removeMemberAction,
 } from "@/app/(app)/projects/member-actions";
 import { SearchInput } from "@/components/app/search-input";
+import { useAction } from "@/components/app/use-action";
 import { useProjectDates } from "@/components/project/project-context";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,6 @@ import {
 import { type ProjectRole, roleLabels } from "@/lib/permissions";
 import { textMatcher } from "@/lib/search";
 import type { PendingInvitation, ProjectMember } from "@/server/queries/members";
-import type { ActionResult } from "@/server/services/errors";
 import { InviteMemberDialog } from "./invite-member-dialog";
 import { ASSIGNABLE_ROLES } from "./roles";
 
@@ -104,19 +103,6 @@ export function MembersSection({
 
 function initials(first: string, last: string): string {
   return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase();
-}
-
-/** Runs an action and reports a failure in a toast. */
-function useAction() {
-  const [pending, startTransition] = useTransition();
-  function run(action: () => Promise<ActionResult<void>>, success?: string) {
-    startTransition(async () => {
-      const result = await action();
-      if (!result.ok) toast.error(result.error.message);
-      else if (success) toast.success(success);
-    });
-  }
-  return { pending, run };
 }
 
 function MemberCard({

@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
+import { LogOutIcon, SettingsIcon, ShieldIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { countMyInvitationsAction } from "@/app/(app)/nav-actions";
@@ -25,10 +25,12 @@ import {
 export function AccountMenu({
   name,
   email,
+  isAdmin,
   invitationCount: initialCount,
 }: {
   name: string;
   email: string;
+  isAdmin: boolean;
   invitationCount: number;
 }) {
   const [signingOut, startSignOut] = useTransition();
@@ -63,6 +65,12 @@ export function AccountMenu({
             <SettingsIcon />
             App settings
           </DropdownMenuLinkItem>
+          {isAdmin && (
+            <DropdownMenuLinkItem render={<Link href="/admin" />}>
+              <ShieldIcon />
+              Administration
+            </DropdownMenuLinkItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem disabled={signingOut} onClick={() => startSignOut(() => signOutAction())}>

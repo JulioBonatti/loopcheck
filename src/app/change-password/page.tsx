@@ -30,9 +30,12 @@ export default function ChangePasswordPage() {
   );
 }
 
-/** Nothing to do here without a pending forced change. */
+/**
+ * Nothing to do here without a pending forced change. Same destination as
+ * the action after a successful change, so the two redirects never disagree.
+ */
 async function OnlyWhenRequired() {
   const user = await requireUser({ allowPendingPasswordChange: true });
-  if (!user.mustChangePassword) redirect("/account");
+  if (!user.mustChangePassword) redirect("/");
   return null;
 }
