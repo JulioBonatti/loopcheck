@@ -7,10 +7,10 @@ import { roleCan } from "@/lib/permissions";
 import { useProject } from "./project-context";
 
 const TABS = [
-  { segment: "loop-check", label: "Loop Check" },
-  { segment: "io-list", label: "IO List" },
+  { segment: "loop-check", label: "Loop check" },
+  { segment: "io-list", label: "IO list" },
   { segment: "reports", label: "Reports" },
-  { segment: "settings", label: "Project Settings" },
+  { segment: "settings", label: "Project settings" },
 ] as const;
 
 /** The four project tabs (REQ-UI-03). Viewers do not see Settings (§7.6). */

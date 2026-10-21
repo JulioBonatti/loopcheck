@@ -26,6 +26,7 @@ Next.js (App Router) · TypeScript strict · PostgreSQL · Drizzle ORM · Zod ·
 ## Regras invioláveis
 
 1. **Interface 100% em inglês** (textos, mensagens, PDF). Código e identificadores em inglês.
+   Títulos, rótulos, abas, botões e itens de menu em **sentence case**: só a primeira letra maiúscula (`Project settings`, `Loop check`, `Generate PDF`). Exceções: siglas (IO, P&ID, PDF, CSV, OK) e o nome `LoopCheck`. Vale também para rótulos que a spec escreve de outro jeito.
 2. **Toda mutação passa pela camada de serviço** (`src/server/services/`): checa permissão → valida com Zod → altera **e** grava `audit_log` na **mesma transação**.
 3. **Permissões sempre checadas no servidor** (matriz em SPEC §5.3). Esconder botão não é proteção.
 4. **Separação de dados da tag:** importação/atualização/edição da IO list **nunca** tocam checkout nem issues; a aba Loop Check **nunca** altera dados da IO list.

@@ -52,7 +52,7 @@ export function NavMenu({ recent: initialRecent }: { recent: RecentProject | nul
           <>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuLabel>Recent</DropdownMenuLabel>
+              <DropdownMenuLabel>Recent projects</DropdownMenuLabel>
               <DropdownMenuLinkItem render={<Link href={`/projects/${recent.id}`} />}>
                 <HistoryIcon />
                 <span className="truncate">{recent.clientName}</span>

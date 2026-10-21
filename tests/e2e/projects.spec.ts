@@ -16,17 +16,17 @@ test("create a project, edit its settings and delete it", async ({ page }) => {
   await page.getByRole("option", { name: "MM/DD/YYYY" }).click();
   await dialog.getByRole("button", { name: "Create project" }).click();
 
-  // Lands on the Loop Check tab, with the project header and the four tabs
+  // Lands on the Loop check tab, with the project header and the four tabs
   await expect(page).toHaveURL(/\/projects\/[0-9a-f-]+\/loop-check$/);
   await expect(page.getByRole("heading", { name: "ACME Mining" })).toBeVisible();
   await expect(page.getByText("No IO list imported")).toBeVisible();
   const tabs = page.getByRole("navigation", { name: "Project" });
-  for (const tab of ["Loop Check", "IO List", "Reports", "Project Settings"]) {
+  for (const tab of ["Loop check", "IO list", "Reports", "Project settings"]) {
     await expect(tabs.getByRole("link", { name: tab })).toBeVisible();
   }
 
   // Settings: edit, and the header follows
-  await tabs.getByRole("link", { name: "Project Settings" }).click();
+  await tabs.getByRole("link", { name: "Project settings" }).click();
   await page.getByLabel("Client name").fill("ACME Mining Co.");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByText("Saved.")).toBeVisible();

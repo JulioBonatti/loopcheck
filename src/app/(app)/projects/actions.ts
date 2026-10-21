@@ -25,7 +25,7 @@ function readProjectForm(formData: FormData) {
   return Object.fromEntries(PROJECT_FIELDS.map((f) => [f, String(formData.get(f) ?? "")]));
 }
 
-/** REQ-PROJ-01: opens the new project on its Loop Check tab. */
+/** REQ-PROJ-01: opens the new project on its Loop check tab. */
 export async function createProjectAction(
   _: ProjectFormState,
   formData: FormData,

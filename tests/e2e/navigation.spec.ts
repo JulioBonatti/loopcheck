@@ -30,7 +30,7 @@ test("the menu shows the project changed last as Recent", async ({ page }) => {
   // Editing Alpha's settings makes it the recent one
   await page.goto("/");
   await page.getByRole("link", { name: /Alpha/ }).click();
-  await page.getByRole("link", { name: "Project Settings" }).click();
+  await page.getByRole("link", { name: "Project settings" }).click();
   await page.getByLabel("Description").fill("Changed");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(page.getByText("Saved.")).toBeVisible();
@@ -47,14 +47,14 @@ test("the menu shows the project changed last as Recent", async ({ page }) => {
   await expect(recent).toHaveText(/Beta/);
 });
 
-test("the account menu leads to My account and App Settings", async ({ page }) => {
+test("the account menu leads to My account and App settings", async ({ page }) => {
   await signUp(page, newAccount("Rui", "Costa"));
 
   const menu = page.getByRole("button", { name: "Open account menu" });
   await expect(menu).toContainText("Rui Costa");
   await menu.hover();
-  await page.getByRole("menuitem", { name: "App Settings" }).click();
-  await expect(page.getByRole("heading", { name: "App Settings" })).toBeVisible();
+  await page.getByRole("menuitem", { name: "App settings" }).click();
+  await expect(page.getByRole("heading", { name: "App settings" })).toBeVisible();
 
   await menu.hover();
   await page.getByRole("menuitem", { name: "My account" }).click();

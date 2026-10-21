@@ -40,7 +40,7 @@ export function AccountMenu({ name, email }: { name: string; email: string }) {
           </DropdownMenuLinkItem>
           <DropdownMenuLinkItem render={<Link href="/app-settings" />}>
             <SettingsIcon />
-            App Settings
+            App settings
           </DropdownMenuLinkItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

@@ -4,7 +4,7 @@ import { formatPercent, ratio } from "@/lib/metrics";
 import { Badge } from "@/components/ui/badge";
 import type { ProjectSummary } from "@/server/queries/projects";
 
-/** One project in the list (REQ-UI-02): opens straight on the Loop Check tab. */
+/** One project in the list (REQ-UI-02): opens straight on the Loop check tab. */
 export function ProjectCard({ project }: { project: ProjectSummary }) {
   const { countableTags, checkedOutTags } = project;
   const done = ratio(checkedOutTags, countableTags);

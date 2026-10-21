@@ -7,7 +7,7 @@ import { roleCan } from "@/lib/permissions";
 import { requireUser } from "@/server/auth/session";
 import { getProjectForUserOnce } from "@/server/queries/projects";
 
-export const metadata: Metadata = { title: "Project Settings · LoopCheck" };
+export const metadata: Metadata = { title: "Project settings · LoopCheck" };
 
 /**
  * Settings tab (SPEC §7.6). Owner and member edit; viewers do not see it.
