@@ -5,10 +5,11 @@
  * `mutate`; they still validate with Zod and write the audit entry in the
  * same transaction as the change (ARQ-01).
  */
-import { and, count, desc, eq, gt, lt, sql } from "drizzle-orm";
+import { and, desc, eq, gt, lt } from "drizzle-orm";
 import { z } from "zod";
 import { SESSION_MAX_AGE_SECONDS } from "@/lib/session-cookie";
 import { type Db, db as defaultDb, type Tx } from "@/server/db";
+import { isUniqueViolation } from "@/server/db/errors";
 import { loginAttempts, sessions, users } from "@/server/db/schema";
 import { hashPassword, verifyAgainstDummy, verifyPassword } from "@/server/auth/password";
 import { generateSessionToken, hashSessionToken } from "@/server/auth/tokens";
@@ -98,10 +99,12 @@ async function createSession(tx: Tx, userId: string, now: Date) {
   return { id: session.id, token, expiresAt };
 }
 
+const EMAIL_TAKEN = { email: ["An account with this email already exists."] };
+
 /**
- * REQ-AUTH-01, REQ-AUTH-05. The first account becomes admin. Invitations sent
- * to this e-mail show up on their own, since they are matched by e-mail
- * (REQ-MEM-03).
+ * REQ-AUTH-01. Sign-up never makes an admin: IT creates admins in the
+ * database (REQ-AUTH-05 dropped on 2026-10-21). Invitations sent to this
+ * e-mail show up on their own, since they are matched by e-mail (REQ-MEM-03).
  */
 export async function signUp(
   input: unknown,
@@ -111,38 +114,33 @@ export async function signUp(
   const passwordHash = await hashPassword(data.password);
 
   return db.transaction(async (tx) => {
-    // Serialize sign-ups so two simultaneous "first" users cannot both be admin.
-    await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext('loopcheck.sign_up'))`);
-
     const [taken] = await tx
       .select({ id: users.id })
       .from(users)
       .where(eq(users.email, data.email));
-    if (taken) {
-      throw new ValidationError(undefined, {
-        email: ["An account with this email already exists."],
-      });
-    }
-    const [{ total }] = await tx.select({ total: count() }).from(users);
+    if (taken) throw new ValidationError(undefined, EMAIL_TAKEN);
 
-    const [user] = await tx
-      .insert(users)
-      .values({
-        email: data.email,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        passwordHash,
-        isAdmin: total === 0,
-      })
-      .returning(sessionUserColumns);
+    let user: SessionUser;
+    try {
+      [user] = await tx
+        .insert(users)
+        .values({
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          passwordHash,
+        })
+        .returning(sessionUserColumns);
+    } catch (error) {
+      // Same e-mail signing up at the same moment: the unique index decides.
+      if (isUniqueViolation(error, "users_email_unique")) {
+        throw new ValidationError(undefined, EMAIL_TAKEN);
+      }
+      throw error;
+    }
     const session = await createSession(tx, user.id, now);
 
-    const after = {
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      isAdmin: user.isAdmin,
-    };
+    const after = { email: user.email, firstName: user.firstName, lastName: user.lastName };
     await writeAudit(tx, user.id, [
       { action: "user.sign_up", entityType: "user", entityId: user.id, after },
       { action: "auth.sign_in", entityType: "session", entityId: session.id },

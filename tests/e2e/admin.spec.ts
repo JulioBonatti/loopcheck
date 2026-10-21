@@ -5,8 +5,10 @@ async function newUser(browser: Browser, first: string, last: string, { admin = 
   const page = await (await browser.newContext()).newPage();
   const account = newAccount(first, last);
   await signUp(page, account);
-  // The first account of a run becomes admin; tests run in parallel, so set it explicitly.
-  await withDb((sql) => sql`update users set is_admin = ${admin} where email = ${account.email}`);
+  // Admins are created by IT in the database, never by signing up.
+  if (admin) {
+    await withDb((sql) => sql`update users set is_admin = true where email = ${account.email}`);
+  }
   return { page, account };
 }
 

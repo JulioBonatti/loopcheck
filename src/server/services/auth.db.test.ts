@@ -40,20 +40,25 @@ afterAll(async () => {
   await db.$client.end();
 });
 
-describe("signUp (REQ-AUTH-01, REQ-AUTH-05)", () => {
-  it("makes only the first user an admin", async () => {
+describe("signUp (REQ-AUTH-01)", () => {
+  it("never makes an admin, not even the first account (IT creates admins)", async () => {
     const first = await signUp(newAccount(ana), { db });
     const second = await signUp(newAccount(bob), { db });
 
-    expect(first.user.isAdmin).toBe(true);
+    expect(first.user.isAdmin).toBe(false);
     expect(second.user.isAdmin).toBe(false);
   });
 
-  it("makes exactly one admin when the first sign-ups happen at once", async () => {
-    await Promise.all([signUp(newAccount(ana), { db }), signUp(newAccount(bob), { db })]);
+  it("lets only one of two simultaneous sign-ups with the same e-mail through", async () => {
+    const results = await Promise.allSettled([
+      signUp(newAccount(ana), { db }),
+      signUp({ ...newAccount(bob), email: ana.email }, { db }),
+    ]);
 
-    const admins = await db.select().from(users).where(eq(users.isAdmin, true));
-    expect(admins).toHaveLength(1);
+    const rejected = results.filter((r) => r.status === "rejected");
+    expect(rejected).toHaveLength(1);
+    expect((rejected[0] as PromiseRejectedResult).reason).toBeInstanceOf(ValidationError);
+    expect(await db.select().from(users)).toHaveLength(1);
   });
 
   it("stores the e-mail in lower case and the password only as argon2id (REQ-AUTH-03)", async () => {
