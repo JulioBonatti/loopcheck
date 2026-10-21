@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { cn } from "cn";
 import { roleCan } from "@/lib/permissions";
+import { projectHref } from "@/lib/routes";
 import { useProject } from "./project-context";
 
 const TABS = [
@@ -24,7 +25,7 @@ export function ProjectTabs() {
       {tabs.map((tab) => (
         <Link
           key={tab.segment}
-          href={`/projects/${id}/${tab.segment}`}
+          href={projectHref(id, tab.segment)}
           aria-current={active === tab.segment ? "page" : undefined}
           className={cn(
             "border-b-2 px-3 py-2 text-sm font-medium transition-colors",

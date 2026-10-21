@@ -11,6 +11,7 @@ import { roleLabels } from "@/lib/permissions";
 import { requireUser } from "@/server/auth/session";
 import { listMyInvitations, type MyInvitation } from "@/server/queries/members";
 import { listMyProjectsOnce, type ProjectSummary } from "@/server/queries/projects";
+import { projectHref } from "@/lib/routes";
 
 export const metadata: Metadata = { title: "My account · LoopCheck" };
 
@@ -83,7 +84,7 @@ function ProjectList({ projects, empty }: { projects: ProjectSummary[]; empty: s
     <ul className="divide-y">
       {projects.map((p) => (
         <li key={p.id} className="flex items-center gap-3 py-2 first:pt-0 last:pb-0">
-          <Link href={`/projects/${p.id}`} className="min-w-0 flex-1 hover:underline">
+          <Link href={projectHref(p.id)} className="min-w-0 flex-1 hover:underline">
             <span className="truncate">{p.clientName}</span>{" "}
             <span className="text-muted-foreground font-mono text-xs">{p.code}</span>
           </Link>

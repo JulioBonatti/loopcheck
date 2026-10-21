@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { projectHref } from "@/lib/routes";
 import { requireActor } from "@/server/auth/session";
 import { refreshProjectLists } from "../refresh";
 import { type ActionError, toActionResult } from "@/server/services/errors";
@@ -35,7 +36,7 @@ export async function createProjectAction(
   const result = await toActionResult(() => createProject(actor, values));
   if (!result.ok) return { error: result.error, values };
   refreshProjectLists();
-  redirect(`/projects/${result.data.id}/loop-check`);
+  redirect(projectHref(result.data.id));
 }
 
 /** REQ-SET-01. Bound to the project id in the form. */

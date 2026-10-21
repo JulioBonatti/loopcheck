@@ -268,7 +268,7 @@ function InvitationCard({
         <span className="text-muted-foreground text-xs">Pending</span>
         {canManage && (
           <Button
-            variant="ghost"
+            variant="destructive"
             size="xs"
             className="ml-auto"
             disabled={pending}

@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { RecentProject } from "@/server/queries/projects";
+import { projectHref } from "@/lib/routes";
 
 /**
  * Project navigation (REQ-UI-01), folded into the header's left corner so the
@@ -53,7 +54,7 @@ export function NavMenu({ recent: initialRecent }: { recent: RecentProject | nul
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuLabel>Recent projects</DropdownMenuLabel>
-              <DropdownMenuLinkItem render={<Link href={`/projects/${recent.id}`} />}>
+              <DropdownMenuLinkItem render={<Link href={projectHref(recent.id)} />}>
                 <HistoryIcon />
                 <span className="truncate">{recent.clientName}</span>
                 <span className="text-muted-foreground ml-auto font-mono text-xs">

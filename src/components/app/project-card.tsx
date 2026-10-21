@@ -3,6 +3,7 @@ import { roleLabels } from "@/lib/permissions";
 import { formatPercent, ratio } from "@/lib/metrics";
 import { Badge } from "@/components/ui/badge";
 import type { ProjectSummary } from "@/server/queries/projects";
+import { projectHref } from "@/lib/routes";
 
 /** One project in the list (REQ-UI-02): opens straight on the Loop check tab. */
 export function ProjectCard({ project }: { project: ProjectSummary }) {
@@ -11,7 +12,7 @@ export function ProjectCard({ project }: { project: ProjectSummary }) {
 
   return (
     <Link
-      href={`/projects/${project.id}`}
+      href={projectHref(project.id)}
       className="bg-card ring-foreground/10 hover:ring-foreground/25 focus-visible:ring-ring group grid gap-3 rounded-xl p-4 ring-1 transition-shadow outline-none hover:shadow-sm focus-visible:ring-2"
     >
       <div className="flex items-start justify-between gap-2">
